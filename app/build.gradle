@@ -92,7 +92,10 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
+    //Needed because of this https://github.com/square/okio/issues/58
     lintOptions {
+        warning 'InvalidPackage'
+        checkReleaseBuilds false
         abortOnError false
     }
 

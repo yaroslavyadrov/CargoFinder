@@ -1,9 +1,12 @@
 package com.example.yaroslavyadrov.cargofinder.injection.module
 
+import android.app.Application
 import com.example.yaroslavyadrov.cargofinder.BuildConfig
+import com.example.yaroslavyadrov.cargofinder.CargoFinderApplication
 import com.example.yaroslavyadrov.cargofinder.data.remote.Api
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.readystatesoftware.chuck.ChuckInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -15,7 +18,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
-open class NetworkModule {
+open class NetworkModule constructor(private val app: Application) {
 
     companion object {
         const val API_URL = "http://api.icndb.com/"
@@ -36,7 +39,7 @@ open class NetworkModule {
             okBuilder.connectTimeout(30000, TimeUnit.MILLISECONDS)
             okBuilder.readTimeout(30000, TimeUnit.MILLISECONDS)
         }
-//        okBuilder.addInterceptor(ChuckInterceptor(app))
+        okBuilder.addInterceptor(ChuckInterceptor(app))
         return okBuilder.build()
     }
 
