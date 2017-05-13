@@ -1,23 +1,44 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    ext.kotlin_version = '1.1.2-3'
     repositories {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.2'
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath 'com.android.tools.build:gradle:2.4.0-alpha7'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
     }
 }
 
 allprojects {
     repositories {
         jcenter()
+        mavenCentral()
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+    minSdkVersion = 16
+    targetSdkVersion = 25
+    compileSdkVersion = 25
+    buildToolsVersion = '25.0.2'
+
+    supportLibVersion = '25.3.1'
+    constraintLayoutVersion = '1.0.2'
+    multiDexVersion = '1.0.1'
+    cardViewVersion = '25.3.1'
+
+    daggerVersion = '2.5'
+    rxAndroidVersion = '2.0.1'
+    rxJavaVersion = '2.1.0'
+    retrofitVersion = '2.2.0'
+    okHttpVersion = '3.6.0'
+    glideVersion = '3.7.0'
+    jodaTimeVersion = '2.9.9'
+    chuckVersion = '1.0.4'
 }
