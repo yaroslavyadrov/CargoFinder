@@ -8,6 +8,8 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(modules = arrayOf(Bindings::class, NetworkModule::class))
-interface ApplicationComponent {
+interface AppComponent {
+
     fun activityComponent(): ActivityComponent
+
 }

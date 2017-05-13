@@ -1,6 +1,7 @@
 package com.example.yaroslavyadrov.cargofinder.injection.module
 
 import com.example.yaroslavyadrov.cargofinder.data.DataManager
+import com.example.yaroslavyadrov.cargofinder.data.DataManagerImpl
 import dagger.Binds
 import dagger.Module
 
@@ -9,6 +10,6 @@ import dagger.Module
 abstract class Bindings {
 
     @Binds
-    internal abstract fun bindDataManger(manager: DataManager): DataManager
+    internal abstract fun bindDataManger(manager: DataManagerImpl): DataManager
 
 }

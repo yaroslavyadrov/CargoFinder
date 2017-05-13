@@ -7,8 +7,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-internal class DataManager @Inject constructor(val api: Api) {
-    fun getRandomJokes(count: Int): Observable<List<Joke>> {
+internal class DataManagerImpl @Inject constructor(val api: Api) : DataManager {
+    override fun getRandomJokes(count: Int): Observable<List<Joke>> {
         return api
                 .fetchRandomJokes(count)
                 .map { it.value }

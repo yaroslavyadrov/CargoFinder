@@ -8,7 +8,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
 import io.reactivex.schedulers.Schedulers.io
 import javax.inject.Inject
 
-
 @PerActivity
 class MainPresenter @Inject constructor(val dataManager: DataManager) : BasePresenter<MainView>() {
 
@@ -17,8 +16,9 @@ class MainPresenter @Inject constructor(val dataManager: DataManager) : BasePres
                 dataManager.getRandomJokes(100)
                         .subscribeOn(io())
                         .observeOn(mainThread())
-                        .subscribe({ onFetchJokesSuccess(it) }
-                                , { onFetchJokesError(it) })
+                        .subscribe(
+                                { onFetchJokesSuccess(it) },
+                                { onFetchJokesError(it) })
         )
     }
 
