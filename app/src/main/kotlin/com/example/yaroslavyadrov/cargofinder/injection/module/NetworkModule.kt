@@ -2,7 +2,6 @@ package com.example.yaroslavyadrov.cargofinder.injection.module
 
 import android.app.Application
 import com.example.yaroslavyadrov.cargofinder.BuildConfig
-import com.example.yaroslavyadrov.cargofinder.CargoFinderApplication
 import com.example.yaroslavyadrov.cargofinder.data.remote.Api
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -56,5 +55,5 @@ open class NetworkModule constructor(private val app: Application) {
 
     @Provides
     @Singleton
-    open fun provideJokesService(retrofit: Retrofit): Api = retrofit.create(Api::class.java)
+    open fun provideApiService(retrofit: Retrofit): Api = retrofit.create(Api::class.java)
 }

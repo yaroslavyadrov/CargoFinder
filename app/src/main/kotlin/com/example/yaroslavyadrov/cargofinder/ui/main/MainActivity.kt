@@ -6,7 +6,7 @@ import com.example.yaroslavyadrov.cargofinder.data.model.Joke
 import com.example.yaroslavyadrov.cargofinder.ui.base.BaseActivity
 import javax.inject.Inject
 
-open class MainActivity : BaseActivity(), MainView {
+class MainActivity : BaseActivity(), MainView {
 
     @Inject lateinit var presenter: MainPresenter
 
