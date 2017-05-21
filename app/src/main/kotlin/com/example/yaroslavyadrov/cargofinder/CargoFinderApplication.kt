@@ -4,7 +4,6 @@ import android.support.multidex.MultiDexApplication
 import com.example.yaroslavyadrov.cargofinder.injection.component.AppComponent
 import com.example.yaroslavyadrov.cargofinder.injection.component.DaggerAppComponent
 import com.example.yaroslavyadrov.cargofinder.injection.module.NetworkModule
-import com.example.yaroslavyadrov.cargofinder.injection.module.PrefsModule
 import net.danlew.android.joda.JodaTimeAndroid
 
 class CargoFinderApplication : MultiDexApplication() {
@@ -19,7 +18,6 @@ class CargoFinderApplication : MultiDexApplication() {
     private fun setupComponent() {
         appComponent = DaggerAppComponent.builder()
                 .networkModule(NetworkModule(this))
-                .prefsModule(PrefsModule(this))
                 .build()
     }
 

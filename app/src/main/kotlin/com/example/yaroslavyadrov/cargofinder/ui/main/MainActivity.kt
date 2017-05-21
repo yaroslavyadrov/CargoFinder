@@ -2,7 +2,6 @@ package com.example.yaroslavyadrov.cargofinder.ui.main
 
 import android.os.Bundle
 import com.example.yaroslavyadrov.cargofinder.R
-import com.example.yaroslavyadrov.cargofinder.data.model.Joke
 import com.example.yaroslavyadrov.cargofinder.ui.base.BaseActivity
 import javax.inject.Inject
 
@@ -20,17 +19,16 @@ class MainActivity : BaseActivity(), MainView {
     }
 
 
-    override fun onFetchJokesSuccess(jokes: List<Joke>) {
-
-    }
-
-    override fun onFetchJokesError(error: Throwable) {
-
-    }
-
     override fun onDestroy() {
         presenter.destroy()
         super.onDestroy()
     }
 
+    override fun onFetchSuccess() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onFetchError(error: Throwable) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }

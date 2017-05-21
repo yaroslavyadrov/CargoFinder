@@ -1,11 +1,9 @@
 package com.example.yaroslavyadrov.cargofinder.ui.main
 
 import com.example.yaroslavyadrov.cargofinder.data.DataManager
-import com.example.yaroslavyadrov.cargofinder.data.model.Joke
+import com.example.yaroslavyadrov.cargofinder.data.model.CargoFinderException
 import com.example.yaroslavyadrov.cargofinder.injection.scope.PerActivity
 import com.example.yaroslavyadrov.cargofinder.ui.base.BasePresenter
-import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
-import io.reactivex.schedulers.Schedulers.io
 import javax.inject.Inject
 
 @PerActivity
@@ -13,21 +11,21 @@ class MainPresenter @Inject constructor(val dataManager: DataManager) : BasePres
 
     fun fetchJokes() {
         disposables.add(
-                dataManager.getRandomJokes(100)
-                        .subscribeOn(io())
-                        .observeOn(mainThread())
+                dataManager.getGuestToken("some", "some")
                         .subscribe(
-                                { onFetchJokesSuccess(it) },
-                                { onFetchJokesError(it) })
+                                { val i = 1 },
+                                { e ->
+                                    run {
+                                        when (e) {
+                                            is CargoFinderException -> {
+                                                e.message
+                                            }
+                                            else -> {
+                                            }
+                                        }
+                                    }
+                                })
         )
-    }
-
-    fun onFetchJokesSuccess(jokes: List<Joke>) {
-        view?.onFetchJokesSuccess(jokes)
-    }
-
-    fun onFetchJokesError(error: Throwable) {
-        view?.onFetchJokesError(error)
     }
 
 }

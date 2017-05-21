@@ -1,6 +1,8 @@
 package com.example.yaroslavyadrov.cargofinder.injection.module
 
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import com.example.yaroslavyadrov.cargofinder.BuildConfig
 import com.example.yaroslavyadrov.cargofinder.data.remote.Api
 import com.google.gson.Gson
@@ -8,6 +10,7 @@ import com.google.gson.GsonBuilder
 import com.readystatesoftware.chuck.ChuckInterceptor
 import dagger.Module
 import dagger.Provides
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -16,11 +19,19 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
+
 @Module
 open class NetworkModule constructor(private val app: Application) {
 
     companion object {
         const val API_URL = "http://api.icndb.com/"
+        const val PREF_FILE_NAME = "cargofinder_preferences"
+    }
+
+    @Provides
+    @Singleton
+    internal fun providePrefs(): SharedPreferences {
+        return app.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE)
     }
 
     @Provides
@@ -29,7 +40,7 @@ open class NetworkModule constructor(private val app: Application) {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient {
+    fun provideOkHttpClient(prefs: SharedPreferences): OkHttpClient {
         val okBuilder = OkHttpClient.Builder()
         if (BuildConfig.DEBUG) {
             val interceptor = HttpLoggingInterceptor()
@@ -38,6 +49,18 @@ open class NetworkModule constructor(private val app: Application) {
             okBuilder.connectTimeout(30000, TimeUnit.MILLISECONDS)
             okBuilder.readTimeout(30000, TimeUnit.MILLISECONDS)
         }
+        val authInterceptor = Interceptor { chain ->
+            val original = chain.request()
+            val token = prefs.getString("token", "")
+            val requestBuilder = original.newBuilder()
+            if (token.isNotEmpty()) {
+                requestBuilder.header("Content-Type", "application/json")
+                        .header("X-Auth-Token", token)
+            }
+            val request = requestBuilder.build()
+            chain.proceed(request)
+        }
+        okBuilder.addInterceptor(authInterceptor)
         okBuilder.addInterceptor(ChuckInterceptor(app))
         return okBuilder.build()
     }
