@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CargoFinder</string>
+    <string name="loading">Пожалуйста подождите…</string>
+    <string name="error_no_internet">Проверьте подключение к интернету</string>
 </resources>

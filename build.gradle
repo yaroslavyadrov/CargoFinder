@@ -40,4 +40,6 @@ ext {
     glideVersion = '3.7.0'
     jodaTimeVersion = '2.9.9'
     chuckVersion = '1.0.4'
+    rxPermissionsVersion = '0.9.4@aar'
+    timberVersion = '4.5.1'
 }

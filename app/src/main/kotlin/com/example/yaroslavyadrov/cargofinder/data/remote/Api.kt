@@ -15,7 +15,7 @@ interface Api {
     fun getGuestToken(@Body body: GuestTokenBody): Single<BaseResponse<Token>>
 
     @POST("/auth/send_code")
-    fun sendCode(@Body body: SendCodeBody): Single<BaseResponse<Any>>
+    fun sendCode(@Body body: SendCodeBody): Single<BaseResponse<Nothing>>
 
     @POST("/auth/check_code")
     fun checkCode(@Body body: CheckCodeBody): Single<BaseResponse<Token>>

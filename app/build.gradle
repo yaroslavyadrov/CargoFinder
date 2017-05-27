@@ -105,7 +105,6 @@ android {
 }
 
 dependencies {
-    compile "org.jetbrains.anko:anko:0.10.0-rc"
     compile "org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}"
 
     // Local
@@ -143,4 +142,10 @@ dependencies {
     // Chuck
     debugCompile "com.readystatesoftware.chuck:library:${chuckVersion}"
     releaseCompile "com.readystatesoftware.chuck:library-no-op:${chuckVersion}"
+
+    //RxPermissions
+    compile "com.tbruyelle.rxpermissions2:rxpermissions:${rxPermissionsVersion}"
+
+    //Timber
+    compile "com.jakewharton.timber:timber:${timberVersion}"
 }

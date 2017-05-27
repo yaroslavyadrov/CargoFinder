@@ -3,7 +3,10 @@ package com.example.yaroslavyadrov.cargofinder.injection.module
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
 import com.example.yaroslavyadrov.cargofinder.BuildConfig
+import com.example.yaroslavyadrov.cargofinder.R
+import com.example.yaroslavyadrov.cargofinder.data.model.CargoFinderException
 import com.example.yaroslavyadrov.cargofinder.data.remote.Api
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -12,10 +15,12 @@ import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.internal.connection.ConnectInterceptor
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -24,14 +29,28 @@ import javax.inject.Singleton
 open class NetworkModule constructor(private val app: Application) {
 
     companion object {
-        const val API_URL = "http://api.icndb.com/"
+        const val API_URL = "http://gruzovoz.alexkam.ru/"
         const val PREF_FILE_NAME = "cargofinder_preferences"
     }
 
     @Provides
     @Singleton
-    internal fun providePrefs(): SharedPreferences {
+    fun providePrefs(): SharedPreferences {
         return app.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCheckNetworkInterceptor(): Interceptor {
+        return Interceptor { chain ->
+            try {
+                with(chain) {
+                    proceed(request())
+                }
+            } catch (e: IOException) {
+                throw CargoFinderException(app.getString(R.string.error_no_internet))
+            }
+        }
     }
 
     @Provides
@@ -40,7 +59,7 @@ open class NetworkModule constructor(private val app: Application) {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(prefs: SharedPreferences): OkHttpClient {
+    fun provideOkHttpClient(connectivityInterceptor: Interceptor, prefs: SharedPreferences): OkHttpClient {
         val okBuilder = OkHttpClient.Builder()
         if (BuildConfig.DEBUG) {
             val interceptor = HttpLoggingInterceptor()
@@ -61,6 +80,7 @@ open class NetworkModule constructor(private val app: Application) {
             chain.proceed(request)
         }
         okBuilder.addInterceptor(authInterceptor)
+        okBuilder.addInterceptor(connectivityInterceptor)
         okBuilder.addInterceptor(ChuckInterceptor(app))
         return okBuilder.build()
     }
