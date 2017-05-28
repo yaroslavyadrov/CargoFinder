@@ -7,6 +7,7 @@ import com.example.yaroslavyadrov.cargofinder.data.remote.Api
 import com.example.yaroslavyadrov.cargofinder.data.remote.postparams.CheckCodeBody
 import com.example.yaroslavyadrov.cargofinder.data.remote.postparams.GuestTokenBody
 import com.example.yaroslavyadrov.cargofinder.data.remote.postparams.SendCodeBody
+import com.example.yaroslavyadrov.cargofinder.util.UserType
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.exceptions.Exceptions
@@ -25,15 +26,15 @@ class DataManager @Inject constructor(val api: Api, val prefs: PreferencesHelper
                 }
     }
 
-    fun getGuestToken(userType: String, uid: String): Completable {
-        val body = GuestTokenBody(userType, uid)
+    fun getGuestToken(userType: UserType, uid: String): Completable {
+        val body = GuestTokenBody(userType.type, uid)
         return makeRequest { api.getGuestToken(body) }
                 .map { prefs.setToken(it.data.token) }
                 .toCompletable()
     }
 
-    fun sendCode(contryCode: String, phone: String, userType: String): Completable {
-        val body = SendCodeBody(contryCode, phone, userType)
+    fun sendCode(contryCode: String, phone: String, userType: UserType): Completable {
+        val body = SendCodeBody(contryCode, phone, userType.type)
         return makeRequest { sendCode(body) }
                 .toCompletable()
     }

@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class StartPresenter @Inject constructor(private val dataManager: DataManager) : BasePresenter<StartView>() {
 
-    fun getGuestToken(userType: String, uid: String) {
+    fun getGuestToken(userType: UserType, uid: String) {
         view?.showProgressDialog()
         dataManager.getGuestToken(userType, uid)
                 .subscribeOn(Schedulers.io())
@@ -20,8 +20,8 @@ class StartPresenter @Inject constructor(private val dataManager: DataManager) :
                 .subscribe(
                         {
                             when (userType) {
-                                UserType.CUSTOMER.type -> view?.openCustomerAuthActivity()
-                                UserType.DRIVER.type -> view?.openDriverAuthActivity()
+                                UserType.CUSTOMER -> view?.openCustomerAuthActivity()
+                                UserType.DRIVER -> view?.openDriverAuthActivity()
                             }
                         },
                         { error ->
