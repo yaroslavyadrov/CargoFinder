@@ -6,6 +6,7 @@ import com.example.yaroslavyadrov.cargofinder.ui.base.BasePresenter
 import com.example.yaroslavyadrov.cargofinder.util.UserType
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 class StartPresenter @Inject constructor(private val dataManager: DataManager) : BasePresenter<StartView>() {
@@ -24,8 +25,9 @@ class StartPresenter @Inject constructor(private val dataManager: DataManager) :
                             }
                         },
                         { error ->
-                            when (error) {
-                                is CargoFinderException -> view?.showError(error.message)
+                            Timber.e(error)
+                            when (error.cause) {
+                                is CargoFinderException -> view?.showError((error.cause as CargoFinderException).message)
                             }
                         })
     }

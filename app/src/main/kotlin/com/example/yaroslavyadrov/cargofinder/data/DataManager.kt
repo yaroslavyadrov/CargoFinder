@@ -9,8 +9,7 @@ import com.example.yaroslavyadrov.cargofinder.data.remote.postparams.GuestTokenB
 import com.example.yaroslavyadrov.cargofinder.data.remote.postparams.SendCodeBody
 import io.reactivex.Completable
 import io.reactivex.Single
-import retrofit2.Retrofit
-import java.io.IOException
+import io.reactivex.exceptions.Exceptions
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -19,16 +18,11 @@ class DataManager @Inject constructor(val api: Api, val prefs: PreferencesHelper
 
     private inline fun <R> makeRequest(request: Api.() -> Single<BaseResponse<R>>): Single<BaseResponse<R>> {
         return api.request()
-                .checkResponse()
-    }
-
-    fun <R> Single<BaseResponse<R>>.checkResponse(): Single<BaseResponse<R>> {
-        return doOnEvent { (code, message), error ->
-            when {
-                code != 0 -> throw CargoFinderException(message)
-                error is IOException -> throw CargoFinderException("Проверьте подключение к интернету")
-            }
-        }
+                .doOnSuccess { (code, message) ->
+                    when {
+                        code != 0 -> throw Exceptions.propagate(CargoFinderException(message))
+                    }
+                }
     }
 
     fun getGuestToken(userType: String, uid: String): Completable {

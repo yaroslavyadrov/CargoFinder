@@ -15,7 +15,11 @@ class CargoFinderApplication : MultiDexApplication() {
         JodaTimeAndroid.init(this)
         setupComponent()
         if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
+            Timber.plant(object : Timber.DebugTree() {
+                override fun createStackElementTag(element: StackTraceElement): String {
+                    return super.createStackElementTag(element) + ':' + element.lineNumber
+                }
+            })
         }
     }
 

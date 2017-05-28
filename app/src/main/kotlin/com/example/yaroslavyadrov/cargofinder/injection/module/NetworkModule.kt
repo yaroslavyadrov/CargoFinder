@@ -3,7 +3,6 @@ package com.example.yaroslavyadrov.cargofinder.injection.module
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.net.ConnectivityManager
 import com.example.yaroslavyadrov.cargofinder.BuildConfig
 import com.example.yaroslavyadrov.cargofinder.R
 import com.example.yaroslavyadrov.cargofinder.data.model.CargoFinderException
@@ -13,9 +12,9 @@ import com.google.gson.GsonBuilder
 import com.readystatesoftware.chuck.ChuckInterceptor
 import dagger.Module
 import dagger.Provides
+import io.reactivex.exceptions.Exceptions
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.internal.connection.ConnectInterceptor
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -48,7 +47,7 @@ open class NetworkModule constructor(private val app: Application) {
                     proceed(request())
                 }
             } catch (e: IOException) {
-                throw CargoFinderException(app.getString(R.string.error_no_internet))
+                throw Exceptions.propagate(CargoFinderException(app.getString(R.string.error_no_internet)))
             }
         }
     }
