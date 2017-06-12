@@ -5,6 +5,5 @@ import com.google.gson.annotations.SerializedName
 
 data class SendCodeBody(
         @SerializedName("country_code") val countryCode: String,
-        @SerializedName("phone") val phone: String,
-        @SerializedName("user_type") val userType: String
+        @SerializedName("phone") val phone: String
 )

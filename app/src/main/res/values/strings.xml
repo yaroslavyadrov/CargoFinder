@@ -2,6 +2,7 @@
     <string name="app_name">CargoFinder</string>
     <string name="loading">Пожалуйста подождите…</string>
     <string name="error_no_internet">Проверьте подключение к интернету</string>
+    <string name="unexpected_error">Возникла непредвиденная ошибка, попробуйте позже</string>
     <!--Стартовый экран-->
     <string name="login">Войти</string>
     <string name="register">Зарегистрироваться</string>
@@ -11,4 +12,5 @@
     <string name="phone_number">Номер телефона</string>
     <string name="customer_try">Я заказчик, хочу посмотреть как это работает</string>
     <string name="ru_phone_code">+7</string>
+    <string name="error_wrong_number">Неправильный номер телефона</string>
 </resources>

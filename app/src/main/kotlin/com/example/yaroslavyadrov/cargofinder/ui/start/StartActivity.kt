@@ -1,10 +1,13 @@
 package com.example.yaroslavyadrov.cargofinder.ui.start
 
 import android.os.Bundle
+import android.provider.Settings
 import android.support.v7.app.AlertDialog
 import com.example.yaroslavyadrov.cargofinder.R
 import com.example.yaroslavyadrov.cargofinder.ui.base.BaseActivity
+import com.example.yaroslavyadrov.cargofinder.ui.checkcode.CheckCodeActivity
 import com.example.yaroslavyadrov.cargofinder.util.extensions.addPhoneTextWatcher
+import com.example.yaroslavyadrov.cargofinder.util.extensions.launchActivity
 import com.example.yaroslavyadrov.cargofinder.util.extensions.showSnackbar
 import kotlinx.android.synthetic.main.layout_activity_start.*
 import timber.log.Timber
@@ -26,6 +29,11 @@ class StartActivity : BaseActivity(), StartView {
         editTextPhone.addPhoneTextWatcher()
         userTypeDialog = createUserTypeDialog()
         buttonRegister.setOnClickListener { presenter.showUserTypeDialog() }
+        val deviceId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
+        buttonEnter.setOnClickListener {
+            val phone = editTextPhone.text.filter { it.isDigit() }.toString()
+            presenter.attemptLogin(textViewCode.text.toString(), phone, deviceId)
+        }
     }
 
     override fun onDestroy() {
@@ -53,6 +61,10 @@ class StartActivity : BaseActivity(), StartView {
         userTypeDialog.show()
     }
 
+    override fun openCheckCodeActivity(code: String, phone: String) {
+        launchActivity<CheckCodeActivity>()
+    }
+
     override fun openDriverRegistration() {
         Timber.d("driver")
     }
@@ -69,5 +81,6 @@ class StartActivity : BaseActivity(), StartView {
 
     override fun showError(message: String) = showSnackbar(buttonRegister, message)
 
+    override fun showError(messageRes: Int) = showSnackbar(buttonRegister, getString(messageRes))
 }
 

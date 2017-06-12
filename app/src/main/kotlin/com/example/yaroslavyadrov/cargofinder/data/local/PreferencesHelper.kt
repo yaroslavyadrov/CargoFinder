@@ -11,12 +11,11 @@ class PreferencesHelper @Inject constructor(val prefs: SharedPreferences) {
         private val KEY_AUTHORIZED = "authorized"
     }
 
-    fun setToken(token: String) = prefs.edit().putString(KEY_TOKEN, token).apply()
+    var token: String
+        get() = prefs.getString(KEY_TOKEN, "")
+        set(value) = prefs.edit().putString(KEY_TOKEN, value).apply()
 
-    fun isAuthorized(): Boolean = prefs.getBoolean(KEY_AUTHORIZED, false)
-
-    fun setIsAuthorized(isAuthorized: Boolean) {
-        prefs.edit().putBoolean(KEY_AUTHORIZED, isAuthorized).apply()
-    }
-
+    var authorizad: Boolean
+        get() = prefs.getBoolean(KEY_AUTHORIZED, false)
+        set(value) = prefs.edit().putBoolean(KEY_AUTHORIZED, value).apply()
 }
