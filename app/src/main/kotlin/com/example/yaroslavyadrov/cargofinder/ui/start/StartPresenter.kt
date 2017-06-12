@@ -11,6 +11,10 @@ import javax.inject.Inject
 
 class StartPresenter @Inject constructor(private val dataManager: DataManager) : BasePresenter<StartView>() {
 
+    fun showUserTypeDialog() = view?.showUserTypeDialog()
+    fun openDriverRegistration() = view?.openDriverRegistration()
+    fun openCustomerRegistration() = view?.openCustomerRegistration()
+
     fun getGuestToken(userType: UserType, uid: String) {
         view?.showProgressDialog()
         dataManager.getGuestToken(userType, uid)
@@ -19,10 +23,7 @@ class StartPresenter @Inject constructor(private val dataManager: DataManager) :
                 .doOnEvent { view?.hideProgressDialog() }
                 .subscribe(
                         {
-                            when (userType) {
-                                UserType.CUSTOMER -> view?.openCustomerAuthActivity()
-                                UserType.DRIVER -> view?.openDriverAuthActivity()
-                            }
+                            //                            view?.openEnterRouteActivity(userType.type)
                         },
                         { error ->
                             Timber.e(error)

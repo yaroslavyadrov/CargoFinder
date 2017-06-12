@@ -15,6 +15,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.start.StartActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -22,7 +23,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.customer.customerroute.CustomerRouteActivity"
+        <activity
+            android:name=".ui.customer.registration.CustomerRegistrationActivity"
             android:screenOrientation="portrait"/>
     </application>
 

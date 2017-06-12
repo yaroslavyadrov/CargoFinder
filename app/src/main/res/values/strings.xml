@@ -2,4 +2,13 @@
     <string name="app_name">CargoFinder</string>
     <string name="loading">Пожалуйста подождите…</string>
     <string name="error_no_internet">Проверьте подключение к интернету</string>
+    <!--Стартовый экран-->
+    <string name="login">Войти</string>
+    <string name="register">Зарегистрироваться</string>
+    <string name="driver">Водитель</string>
+    <string name="customer">Заказчик</string>
+    <string name="who_are_you">Кто вы?</string>
+    <string name="phone_number">Номер телефона</string>
+    <string name="customer_try">Я заказчик, хочу посмотреть как это работает</string>
+    <string name="ru_phone_code">+7</string>
 </resources>
