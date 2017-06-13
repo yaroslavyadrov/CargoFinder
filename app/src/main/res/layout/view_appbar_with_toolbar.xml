@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.AppBarLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/appBarLayout"
     style="@style/AppTheme.AppBarOverlay"
     android:layout_width="match_parent"
@@ -9,6 +10,8 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
+        app:titleTextColor="@color/light_grey"
+        app:subtitleTextColor="@color/light_grey"
         android:layout_height="?android:attr/actionBarSize"/>
 
 </android.support.design.widget.AppBarLayout>

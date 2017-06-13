@@ -28,6 +28,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.checkcode.CheckCodeActivity"
+            android:windowSoftInputMode="stateAlwaysVisible"
             android:screenOrientation="portrait"/>
     </application>
 

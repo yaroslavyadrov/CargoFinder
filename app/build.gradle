@@ -50,6 +50,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionName getVersionName()
         versionCode getVersionCode()
+        vectorDrawables.useSupportLibrary = true
     }
 
     signingConfigs {

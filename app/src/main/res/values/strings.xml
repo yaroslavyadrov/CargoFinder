@@ -13,4 +13,5 @@
     <string name="customer_try">Я заказчик, хочу посмотреть как это работает</string>
     <string name="ru_phone_code">+7</string>
     <string name="error_wrong_number">Неправильный номер телефона</string>
+    <string name="check_code_title">Подтверждение номера</string>
 </resources>

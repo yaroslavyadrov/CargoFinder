@@ -16,6 +16,7 @@ class StartPresenter @Inject constructor(private val dataManager: DataManager) :
     fun openCustomerRegistration() = view?.openCustomerRegistration()
 
     fun attemptLogin(code: String, phone: String, deviceId: String) {
+        view?.openCheckCodeActivity(code, phone)
         when (phone.length) {
             in 0..9 -> view?.showError(R.string.error_wrong_number)
             else -> {
