@@ -45,7 +45,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.example.yaroslavyadrov.cargofinder"
+        applicationId "ru.mydispatcher"
         minSdkVersion minSdk
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionName getVersionName()

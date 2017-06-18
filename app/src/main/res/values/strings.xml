@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CargoFinder</string>
+    <string name="app_name">Диспетчер</string>
     <string name="loading">Пожалуйста подождите…</string>
     <string name="error_no_internet">Проверьте подключение к интернету</string>
     <string name="unexpected_error">Возникла непредвиденная ошибка, попробуйте позже</string>
