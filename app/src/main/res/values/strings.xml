@@ -14,4 +14,7 @@
     <string name="ru_phone_code">+7</string>
     <string name="error_wrong_number">Неправильный номер телефона</string>
     <string name="check_code_title">Подтверждение номера</string>
+    <string name="check_code_details">Мы отправили СМС с кодом на номер \n%s</string>
+    <string name="check_code_resend_time">Повторить отправку можно будет через \n%s</string>
+    <string name="check_code_resend">Повторить</string>
 </resources>

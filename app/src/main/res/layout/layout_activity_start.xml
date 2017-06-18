@@ -38,7 +38,7 @@
 
     <EditText
         android:id="@+id/editTextPhone"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:ems="10"
@@ -49,12 +49,13 @@
         android:textColor="@color/primaryText"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/buttonEnter"
-        app:layout_constraintStart_toEndOf="@+id/textViewCode"
+        app:layout_constraintEnd_toEndOf="@+id/buttonEnter"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.75"
         app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="16dp"/>
+        app:layout_constraintStart_toStartOf="@+id/buttonEnter"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"/>
 
     <TextView
         android:id="@+id/textViewCustomerDemo"
@@ -82,7 +83,6 @@
         app:layout_constraintEnd_toStartOf="@+id/editTextPhone"
         app:layout_constraintTop_toTopOf="@+id/editTextPhone"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="16dp"/>
+        />
 
 </android.support.constraint.ConstraintLayout>

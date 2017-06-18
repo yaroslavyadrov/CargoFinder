@@ -1,16 +1,17 @@
 package com.example.yaroslavyadrov.cargofinder.ui.start
 
-import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.support.v7.app.AlertDialog
 import com.example.yaroslavyadrov.cargofinder.R
 import com.example.yaroslavyadrov.cargofinder.ui.base.BaseActivity
 import com.example.yaroslavyadrov.cargofinder.ui.checkcode.CheckCodeActivity
-import com.example.yaroslavyadrov.cargofinder.ui.checkcode.checkCodeIntent
+import com.example.yaroslavyadrov.cargofinder.util.EXTRA_PHONE_CODE
+import com.example.yaroslavyadrov.cargofinder.util.EXTRA_PHONE_NUMBER
 import com.example.yaroslavyadrov.cargofinder.util.extensions.addPhoneTextWatcher
 import com.example.yaroslavyadrov.cargofinder.util.extensions.showSnackbar
 import kotlinx.android.synthetic.main.layout_activity_start.*
+import org.jetbrains.anko.startActivity
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -63,7 +64,7 @@ class StartActivity : BaseActivity(), StartView {
     }
 
     override fun openCheckCodeActivity(code: String, phone: String) {
-        startActivity(checkCodeIntent(code, phone))
+        startActivity<CheckCodeActivity>(EXTRA_PHONE_CODE to code, EXTRA_PHONE_NUMBER to phone)
     }
 
     override fun openDriverRegistration() {

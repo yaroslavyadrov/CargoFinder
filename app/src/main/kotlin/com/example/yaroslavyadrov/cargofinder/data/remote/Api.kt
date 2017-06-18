@@ -1,6 +1,7 @@
 package com.example.yaroslavyadrov.cargofinder.data.remote
 
 import com.example.yaroslavyadrov.cargofinder.data.model.BaseResponse
+import com.example.yaroslavyadrov.cargofinder.data.model.CheckCodeResult
 import com.example.yaroslavyadrov.cargofinder.data.model.Token
 import com.example.yaroslavyadrov.cargofinder.data.remote.postparams.CheckCodeBody
 import com.example.yaroslavyadrov.cargofinder.data.remote.postparams.GuestTokenBody
@@ -18,5 +19,5 @@ interface Api {
     fun sendCode(@Body body: SendCodeBody): Single<BaseResponse<Nothing>>
 
     @POST("/auth/check_code")
-    fun checkCode(@Body body: CheckCodeBody): Single<BaseResponse<Token>>
+    fun checkCode(@Body body: CheckCodeBody): Single<BaseResponse<CheckCodeResult>>
 }

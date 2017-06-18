@@ -21,7 +21,7 @@ class StartPresenter @Inject constructor(private val dataManager: DataManager) :
             in 0..9 -> view?.showError(R.string.error_wrong_number)
             else -> {
                 view?.showProgressDialog()
-                dataManager.getGuestToken(deviceId)
+                disposables.add(dataManager.getGuestToken(deviceId)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnEvent { view?.hideProgressDialog() }
@@ -35,7 +35,7 @@ class StartPresenter @Inject constructor(private val dataManager: DataManager) :
                                         is CargoFinderException -> view?.showError((error.cause as CargoFinderException).message)
                                         else -> view?.showError(R.string.unexpected_error)
                                     }
-                                })
+                                }))
             }
         }
     }

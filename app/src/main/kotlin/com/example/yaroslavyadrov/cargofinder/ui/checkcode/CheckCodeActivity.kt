@@ -1,27 +1,21 @@
 package com.example.yaroslavyadrov.cargofinder.ui.checkcode
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.TypedValue
 import com.example.yaroslavyadrov.cargofinder.R
 import com.example.yaroslavyadrov.cargofinder.ui.base.BaseActivity
+import com.example.yaroslavyadrov.cargofinder.util.EXTRA_PHONE_CODE
+import com.example.yaroslavyadrov.cargofinder.util.EXTRA_PHONE_NUMBER
 import com.example.yaroslavyadrov.cargofinder.util.emptyAnimator
 import com.example.yaroslavyadrov.cargofinder.util.extensions.setBackArrowAndFinishActionOnToolbar
+import com.example.yaroslavyadrov.cargofinder.util.extensions.showSnackbar
 import kotlinx.android.synthetic.main.activity_check_code.*
 import kotlinx.android.synthetic.main.view_appbar_with_toolbar.*
-import timber.log.Timber
 import javax.inject.Inject
 
-fun Context.checkCodeIntent(code: String, phone: String): Intent {
-    return Intent(this, CheckCodeActivity::class.java).apply {
-        putExtra(EXTRA_PHONE_CODE, code)
-        putExtra(EXTRA_PHONE_NUMBER, phone)
-    }
-}
-private const val EXTRA_PHONE_CODE = "EXTRAS.extra_phone_code"
-private const val EXTRA_PHONE_NUMBER = "EXTRAS.extra_phone_number"
 
 class CheckCodeActivity : BaseActivity(), CheckCodeMvpView {
     override fun getLayoutResId() = R.layout.activity_check_code
@@ -36,22 +30,72 @@ class CheckCodeActivity : BaseActivity(), CheckCodeMvpView {
         setBackArrowAndFinishActionOnToolbar()
         val code = intent.getStringExtra(EXTRA_PHONE_CODE) ?: throw RuntimeException("Value code needed")
         val phone = intent.getStringExtra(EXTRA_PHONE_NUMBER) ?: throw RuntimeException("Value phone needed")
+        presenter.showPhoneNumberDetails(code, phone)
         editTextSymbol5.removeTextChangedListener(editTextSymbol5)
-        editTextSymbol5.addTextChangedListener(object : TextWatcher by emptyAnimator {
-            override fun afterTextChanged(s: Editable?) {
-                if (!s.isNullOrEmpty()) {
-                    Timber.d("code!")
+        editTextSymbol1.addTextChangedListener(textWatcher)
+        editTextSymbol2.addTextChangedListener(textWatcher)
+        editTextSymbol3.addTextChangedListener(textWatcher)
+        editTextSymbol4.addTextChangedListener(textWatcher)
+        editTextSymbol5.addTextChangedListener(textWatcher)
+        editTextSymbol1.isFocusableInTouchMode = true
+        editTextSymbol1.requestFocus()
+        presenter.sendCode(code, phone)
+        textViewResend.setOnClickListener { presenter.sendCode(code, phone) }
+    }
+
+    private val textWatcher : TextWatcher = object : TextWatcher by emptyAnimator {
+        override fun afterTextChanged(s: Editable?) {
+            if (!s.isNullOrEmpty()) {
+                val code = editTextSymbol1.text.toString() + editTextSymbol2.text.toString() +
+                        editTextSymbol3.text.toString() + editTextSymbol4.text.toString() +
+                        editTextSymbol5.text.toString()
+                if (code.length == 5) {
+                    presenter.checkCode(code)
                 }
             }
-        })
-        editTextSymbol1.setFocusableInTouchMode(true)
-        editTextSymbol1.requestFocus()
+        }
     }
+
 
     override fun onDestroy() {
         presenter.destroy()
         super.onDestroy()
     }
 
+    override fun showProgress() = showProgressAlert()
 
+    override fun hideProgress() = hideProgressAlert()
+
+    override fun showError(message: String) = showSnackbar(editTextSymbol1, message)
+
+    override fun showError(messageRes: Int) = showSnackbar(editTextSymbol1, getString(messageRes))
+
+    override fun showDetails(phoneNumber: String) {
+        textViewDetails.text = String.format(getString(R.string.check_code_details), phoneNumber)
+    }
+
+    override fun showRemain(seconds: Int) {
+        val mins = seconds / 60
+        val secs = seconds - (mins * 60)
+        val timeText = if (mins > 0) "${mins}м. ${secs}с." else "${secs}c."
+        textViewResend.apply {
+            text = String.format(getString(R.string.check_code_resend_time), timeText)
+            setTextColor(ContextCompat.getColor(this@CheckCodeActivity, R.color.primaryText))
+            textSize = 16F
+            setBackgroundResource(R.color.transparent)
+            isClickable = false
+        }
+    }
+
+    override fun showResend() {
+        val outValue = TypedValue()
+        theme.resolveAttribute(android.R.attr.selectableItemBackground, outValue, true)
+        textViewResend.apply {
+            text = getString(R.string.check_code_resend)
+            setTextColor(ContextCompat.getColor(this@CheckCodeActivity, R.color.colorAccent))
+            textSize = 18F
+            setBackgroundResource(outValue.resourceId)
+            isClickable = true
+        }
+    }
 }

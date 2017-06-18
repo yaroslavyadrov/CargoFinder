@@ -107,6 +107,7 @@ android {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}"
+    compile "org.jetbrains.anko:anko-commons:${anko_version}"
 
     // Local
     compile fileTree(dir: 'libs', include: ['*.jar'])
