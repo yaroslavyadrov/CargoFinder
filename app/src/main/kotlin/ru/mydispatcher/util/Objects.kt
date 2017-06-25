@@ -5,7 +5,7 @@ import android.text.TextWatcher
 
 //Пустые интерфейсы для удобной реализации
 
-object emptyAnimator: TextWatcher {
+object emptyWatcher : TextWatcher {
     override fun afterTextChanged(s: Editable?) {
     }
 

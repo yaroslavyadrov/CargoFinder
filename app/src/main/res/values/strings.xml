@@ -17,4 +17,10 @@
     <string name="check_code_details">Мы отправили СМС с кодом на номер \n%s</string>
     <string name="check_code_resend_time">Повторить отправку можно будет через \n%s</string>
     <string name="check_code_resend">Повторить</string>
+    <string name="name">Имя</string>
+    <string name="customer_organization">Организация(необязательно)</string>
+    <string name="city">Город</string>
+    <string name="registration_title">Регистрация</string>
+    <string name="search_city_hint">Название города</string>
+    <string name="search_city_nothing_found">Ничего не найдено</string>
 </resources>

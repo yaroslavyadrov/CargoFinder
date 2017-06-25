@@ -25,7 +25,8 @@
         </activity>
         <activity
             android:name=".ui.customer.registration.CustomerRegistrationActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".ui.checkcode.CheckCodeActivity"
             android:windowSoftInputMode="stateAlwaysVisible"

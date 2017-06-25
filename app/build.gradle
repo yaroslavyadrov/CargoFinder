@@ -151,4 +151,9 @@ dependencies {
 
     //Timber
     compile "com.jakewharton.timber:timber:${timberVersion}"
+
+    //RxBindings
+    compile "com.jakewharton.rxbinding2:rxbinding-kotlin:${rxBindingsVersion}"
+    compile "com.jakewharton.rxbinding2:rxbinding-support-v4-kotlin:${rxBindingsVersion}"
+    compile "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:${rxBindingsVersion}"
 }

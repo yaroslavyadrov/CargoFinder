@@ -9,7 +9,7 @@ import org.jetbrains.anko.indeterminateProgressDialog
 
 abstract class BaseActivity : AppCompatActivity() {
 
-    protected var activityComponent: ActivityComponent? = null
+    var activityComponent: ActivityComponent? = null
 
     protected val progressDialog = lazy {
         indeterminateProgressDialog(message = R.string.loading).apply { setCancelable(false) }

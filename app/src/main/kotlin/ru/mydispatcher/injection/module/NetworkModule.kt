@@ -28,7 +28,7 @@ import javax.inject.Singleton
 open class NetworkModule constructor(private val app: Application) {
 
     companion object {
-        const val API_URL = "http://gruzovoz.alexkam.ru/"
+        const val API_URL = "http://gruzovoz.alexkam.ru/api/v1/"
         const val PREF_FILE_NAME = "cargofinder_preferences"
     }
 

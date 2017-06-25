@@ -12,6 +12,7 @@ import ru.mydispatcher.util.extensions.addPhoneTextWatcher
 import ru.mydispatcher.util.extensions.showSnackbar
 import kotlinx.android.synthetic.main.layout_activity_start.*
 import org.jetbrains.anko.startActivity
+import ru.mydispatcher.ui.customer.registration.CustomerRegistrationActivity
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -72,7 +73,7 @@ class StartActivity : BaseActivity(), StartView {
     }
 
     override fun openCustomerRegistration() {
-        Timber.d("customer")
+        startActivity<CustomerRegistrationActivity>()
     }
 
     override fun showProgressDialog() = showProgressAlert()

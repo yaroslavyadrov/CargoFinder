@@ -11,7 +11,7 @@ import ru.mydispatcher.R
 import ru.mydispatcher.ui.base.BaseActivity
 import ru.mydispatcher.util.EXTRA_PHONE_CODE
 import ru.mydispatcher.util.EXTRA_PHONE_NUMBER
-import ru.mydispatcher.util.emptyAnimator
+import ru.mydispatcher.util.emptyWatcher
 import ru.mydispatcher.util.extensions.setBackArrowAndFinishActionOnToolbar
 import ru.mydispatcher.util.extensions.showSnackbar
 import javax.inject.Inject
@@ -43,7 +43,7 @@ class CheckCodeActivity : BaseActivity(), CheckCodeMvpView {
         textViewResend.setOnClickListener { presenter.sendCode(code, phone) }
     }
 
-    private val textWatcher : TextWatcher = object : TextWatcher by emptyAnimator {
+    private val textWatcher : TextWatcher = object : TextWatcher by emptyWatcher {
         override fun afterTextChanged(s: Editable?) {
             if (!s.isNullOrEmpty()) {
                 val code = editTextSymbol1.text.toString() + editTextSymbol2.text.toString() +

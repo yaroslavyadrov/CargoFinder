@@ -12,7 +12,7 @@ import org.joda.time.DateTime
 import org.joda.time.Duration
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject;
+import javax.inject.Inject
 
 
 class CheckCodePresenter @Inject constructor(private val dataManager: DataManager) : BasePresenter<CheckCodeMvpView>() {

@@ -43,4 +43,5 @@ ext {
     chuckVersion = '1.0.4'
     rxPermissionsVersion = '0.9.4@aar'
     timberVersion = '4.5.1'
+    rxBindingsVersion = '2.0.0'
 }

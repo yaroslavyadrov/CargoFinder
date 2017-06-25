@@ -6,6 +6,8 @@ import ru.mydispatcher.data.model.CargoFinderException
 import ru.mydispatcher.ui.base.BasePresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.*
+import ru.mydispatcher.ui.base.MvpView
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -16,7 +18,6 @@ class StartPresenter @Inject constructor(private val dataManager: DataManager) :
     fun openCustomerRegistration() = view?.openCustomerRegistration()
 
     fun attemptLogin(code: String, phone: String, deviceId: String) {
-        view?.openCheckCodeActivity(code, phone)
         when (phone.length) {
             in 0..9 -> view?.showError(R.string.error_wrong_number)
             else -> {

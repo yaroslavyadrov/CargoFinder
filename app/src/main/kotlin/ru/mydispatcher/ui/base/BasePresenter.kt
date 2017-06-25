@@ -16,7 +16,7 @@ abstract class BasePresenter<T : MvpView>  {
         this.view = null
     }
 
-    fun destroy() {
+    open fun destroy() {
         disposables.clear()
         unbind()
     }

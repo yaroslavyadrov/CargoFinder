@@ -7,4 +7,8 @@ import javax.inject.Inject;
 
 class CustomerRegistrationPresenter @Inject constructor(private val dataManager: DataManager) : BasePresenter<CustomerRegistrationMvpView>() {
 
+    fun attemptLogin(name: String, organization: String, phone: String, cityId: Int) {
+
+    }
+
 }
