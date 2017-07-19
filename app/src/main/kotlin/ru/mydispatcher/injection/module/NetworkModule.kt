@@ -9,6 +9,9 @@ import ru.mydispatcher.data.model.CargoFinderException
 import ru.mydispatcher.data.remote.Api
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.TypeAdapter
+import com.google.gson.TypeAdapterFactory
+import com.google.gson.reflect.TypeToken
 import com.readystatesoftware.chuck.ChuckInterceptor
 import dagger.Module
 import dagger.Provides

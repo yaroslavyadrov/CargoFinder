@@ -3,16 +3,16 @@ package ru.mydispatcher.ui.start
 import android.os.Bundle
 import android.provider.Settings
 import android.support.v7.app.AlertDialog
+import kotlinx.android.synthetic.main.layout_activity_start.*
+import org.jetbrains.anko.startActivity
 import ru.mydispatcher.R
 import ru.mydispatcher.ui.base.BaseActivity
 import ru.mydispatcher.ui.checkcode.CheckCodeActivity
+import ru.mydispatcher.ui.customer.registration.CustomerRegistrationActivity
 import ru.mydispatcher.util.EXTRA_PHONE_CODE
 import ru.mydispatcher.util.EXTRA_PHONE_NUMBER
 import ru.mydispatcher.util.extensions.addPhoneTextWatcher
 import ru.mydispatcher.util.extensions.showSnackbar
-import kotlinx.android.synthetic.main.layout_activity_start.*
-import org.jetbrains.anko.startActivity
-import ru.mydispatcher.ui.customer.registration.CustomerRegistrationActivity
 import timber.log.Timber
 import javax.inject.Inject
 

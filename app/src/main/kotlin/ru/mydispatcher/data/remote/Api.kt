@@ -15,13 +15,13 @@ import ru.mydispatcher.data.remote.postparams.SendCodeBody
 
 
 interface Api {
-    @POST("auth/get_guest_token")
+    @POST("auth/get_guest_token/")
     fun getGuestToken(@Body body: GuestTokenBody): Single<BaseResponse<Token>>
 
-    @POST("auth/send_code")
+    @POST("auth/send_code/")
     fun sendCode(@Body body: SendCodeBody): Single<BaseResponse<Nothing>>
 
-    @POST("auth/check_code")
+    @POST("auth/check_code/")
     fun checkCode(@Body body: CheckCodeBody): Single<BaseResponse<CheckCodeResult>>
 
     @GET("geocoding/search/")

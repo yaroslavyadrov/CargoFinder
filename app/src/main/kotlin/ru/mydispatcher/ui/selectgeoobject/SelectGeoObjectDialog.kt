@@ -29,6 +29,7 @@ class SelectGeoObjectDialog : DialogFragment(), SelectGeoObjectView {
     lateinit var type: String
     lateinit var cityFlowable: Flowable<String>
     lateinit var cityDisposable: Disposable
+    private var onObjectClickListener: (GeoObject) -> Unit = {}
 
     companion object {
         const val EXTRA_OBJECT_TYPE = "ru.mydispatcher.extraObjectType"
@@ -68,6 +69,10 @@ class SelectGeoObjectDialog : DialogFragment(), SelectGeoObjectView {
         recyclerViewGeoObjects.layoutManager = LinearLayoutManager(activity)
         recyclerViewGeoObjects.addItemDecoration(DividerItemDecoration(activity, VERTICAL))
         recyclerViewGeoObjects.adapter = adapter
+        adapter.onObjectClick {
+            onObjectClickListener(it)
+            dismiss()
+        }
         cityFlowable = editTextCityQuery.textChanges()
                 .skip(1)
                 .filter { it.length > 2 || it.isEmpty() }
@@ -90,6 +95,10 @@ class SelectGeoObjectDialog : DialogFragment(), SelectGeoObjectView {
             cityDisposable.dispose()
         }
         super.onDestroy()
+    }
+
+    fun onObjectClick(listener: (GeoObject) -> Unit ) {
+        onObjectClickListener = listener
     }
 
     override fun showLoading() {

@@ -1,16 +1,30 @@
 package ru.mydispatcher.ui.customer.registration
 
 
+import android.Manifest
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
+import android.support.v7.widget.PopupMenu
 import android.text.TextUtils
 import com.jakewharton.rxbinding2.widget.textChanges
+import com.kbeanie.multipicker.api.CameraImagePicker
+import com.kbeanie.multipicker.api.ImagePicker
+import com.kbeanie.multipicker.api.Picker
+import com.kbeanie.multipicker.api.callbacks.ImagePickerCallback
+import com.kbeanie.multipicker.api.entity.ChosenImage
+import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
-import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Function3
 import io.reactivex.subscribers.DisposableSubscriber
 import kotlinx.android.synthetic.main.activity_customer_registration.*
 import kotlinx.android.synthetic.main.view_appbar_with_toolbar.*
 import ru.mydispatcher.R
+import ru.mydispatcher.data.model.GeoObject
 import ru.mydispatcher.ui.base.BaseActivity
+import ru.mydispatcher.ui.base.waitForActivityResult
+import ru.mydispatcher.ui.imagecrop.ImageCropActivity
 import ru.mydispatcher.ui.selectgeoobject.SelectGeoObjectDialog
 import ru.mydispatcher.ui.selectgeoobject.SelectGeoObjectDialog.Companion.CITIES
 import ru.mydispatcher.util.extensions.addPhoneTextWatcher
@@ -25,8 +39,43 @@ class CustomerRegistrationActivity : BaseActivity(), CustomerRegistrationMvpView
 
     lateinit var nameFlowable: Flowable<String>
     lateinit var phoneFlowable: Flowable<String>
+    lateinit var cityFlowable: Flowable<String>
     private var isValidForm: Boolean = false
     lateinit private var disposableSubscriber: DisposableSubscriber<Boolean>
+    private val cameraImagePicker: CameraImagePicker by lazy {
+        CameraImagePicker(this).apply { setImagePickerCallback(imagePicker) }
+    }
+    private val internalStoragePhotoPicker: ImagePicker by lazy {
+        ImagePicker(this).apply { setImagePickerCallback(imagePicker) }
+    }
+    val imagePicker: ImagePickerCallback by lazy {
+        object : ImagePickerCallback {
+            override fun onImagesChosen(images: MutableList<ChosenImage>?) {
+                images?.let {
+                    presenter.photoSelected(images[0])
+                }
+            }
+
+            override fun onError(error: String?) {
+                Timber.d(error)
+            }
+        }
+    }
+    private val rxPermissions: RxPermissions by lazy { RxPermissions(this) }
+    private val popupMenu: PopupMenu by lazy {
+        PopupMenu(this, imageViewEditAvatar).apply {
+            inflate(R.menu.menu_edit_avatar)
+            setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.action_camera -> presenter.takePhoto()
+                    R.id.action_gallery -> presenter.chooseFromGallery()
+                    R.id.action_delete -> presenter.deletePhoto()
+                    else -> return@setOnMenuItemClickListener false
+                }
+                return@setOnMenuItemClickListener true
+            }
+        }
+    }
 
     override fun getLayoutResId() = R.layout.activity_customer_registration
 
@@ -39,9 +88,21 @@ class CustomerRegistrationActivity : BaseActivity(), CustomerRegistrationMvpView
         editTextPhone.addPhoneTextWatcher()
         initView()
         checkValidation()
+        imageViewEditAvatar.setOnClickListener {
+            presenter.showPopupMenu()
+        }
         editTextCity.setOnClickListener {
-            val dialog = SelectGeoObjectDialog.createDialog(CITIES)
-            dialog.show(supportFragmentManager, "TAG")
+            presenter.showGeoObjectsDialog()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                Picker.PICK_IMAGE_DEVICE -> internalStoragePhotoPicker.submit(data)
+                Picker.PICK_IMAGE_CAMERA -> cameraImagePicker.submit(data)
+            }
         }
     }
 
@@ -56,6 +117,7 @@ class CustomerRegistrationActivity : BaseActivity(), CustomerRegistrationMvpView
     private fun initView() {
         nameFlowable = editTextName.textChanges().skip(1).map { it.toString() }.toFlowable(BackpressureStrategy.LATEST)
         phoneFlowable = editTextPhone.textChanges().skip(1).map { it.toString() }.toFlowable(BackpressureStrategy.LATEST)
+        cityFlowable = editTextCity.textChanges().skip(1).map { it.toString() }.toFlowable(BackpressureStrategy.LATEST)
     }
 
     private fun checkValidation() {
@@ -73,15 +135,70 @@ class CustomerRegistrationActivity : BaseActivity(), CustomerRegistrationMvpView
             }
         }
 
-        Flowable.combineLatest(nameFlowable, phoneFlowable, BiFunction<String, String, Boolean> { name, newPhone ->
-            val nameValid = !TextUtils.isEmpty(name)
-            val phone = newPhone.filter { it.isDigit() }
-            val phoneValid = phone.length > 9
-            isValidForm = nameValid && phoneValid
-            return@BiFunction isValidForm
-        }).subscribe({
-            buttonRegister.isEnabled = it
-        })
+        Flowable
+                .combineLatest(nameFlowable, phoneFlowable, cityFlowable, Function3<String, String, String, Boolean> { name, newPhone, city ->
+                    val nameValid = !TextUtils.isEmpty(name)
+                    val phone = newPhone.filter { it.isDigit() }
+                    val phoneValid = phone.length > 9
+                    val cityValid = city.isNotEmpty()
+                    isValidForm = nameValid && phoneValid && cityValid
+                    return@Function3 isValidForm
+                })
+                .subscribe(disposableSubscriber)
 
+    }
+
+    override fun showProgressDialog() = showProgressAlert()
+
+    override fun hideProgressDialog() = hideProgressAlert()
+
+    override fun showGeoObjectsDialog() {
+        val dialog = SelectGeoObjectDialog.createDialog(CITIES)
+        dialog.onObjectClick { presenter.geoObjectSelected(it) }
+        dialog.show(supportFragmentManager, "TAG")
+    }
+
+    override fun geoObjectSelected(geoObject: GeoObject) {
+        editTextCity.setText(geoObject.name)
+    }
+
+    override fun showPopupMenu(showDelete: Boolean) {
+        with(popupMenu) {
+            menu.findItem(R.id.action_delete).isVisible = showDelete
+            show()
+        }
+    }
+
+    override fun takePhoto() {
+        rxPermissions.request(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)
+                .subscribe { granted ->
+                    if (granted) {
+                        cameraImagePicker.pickImage()
+                    }
+                }
+    }
+
+    override fun chooseFromGallery() {
+        rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE)
+                .subscribe { granted ->
+                    if (granted) {
+                        internalStoragePhotoPicker.pickImage()
+                    }
+                }
+    }
+
+    override fun deletePhoto() {
+        imageViewAvatar.setImageResource(R.drawable.ic_person)
+    }
+
+    override fun cropPhoto(uri: Uri) {
+        waitForActivityResult(ImageCropActivity.createStartIntent(this, uri)) { intent ->
+            presenter.photoCropped(intent.getParcelableExtra(ImageCropActivity.IMAGE_URI))
+        }
+        hideProgressAlert()
+    }
+
+    override fun showSelectedAvatar(uri: Uri) {
+        imageViewAvatar.setImageURI(uri)
     }
 }

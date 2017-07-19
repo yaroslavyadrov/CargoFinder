@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class GeoObjectsAdapter @Inject
 constructor() : PagingRecyclerViewAdapter<GeoObject, GeoObjectsAdapter.ViewHolder>() {
-    var onObjectClickListener: OnObjectClickListener? = null
+    private var onObjectClickListener: (GeoObject) -> Unit = {}
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) = ViewHolder(
             LayoutInflater.from(parent?.context)
                     .inflate(R.layout.item_city, parent, false))
@@ -23,10 +23,9 @@ constructor() : PagingRecyclerViewAdapter<GeoObject, GeoObjectsAdapter.ViewHolde
         holder?.bind(getItem(position))
     }
 
-    public fun setOnGeoObjectClickListener(listener: OnObjectClickListener) {
+    fun onObjectClick(listener: (GeoObject) -> Unit ) {
         onObjectClickListener = listener
     }
-
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val rootLayout: View = itemView.findViewById(R.id.layoutRoot)
@@ -36,11 +35,7 @@ constructor() : PagingRecyclerViewAdapter<GeoObject, GeoObjectsAdapter.ViewHolde
         fun bind(geoObject: GeoObject) {
             textViewName.text = geoObject.name
             textViewRegion.text = geoObject.parentName
-            rootLayout.setOnClickListener { onObjectClickListener?.apply { onObjectClick(geoObject) } }
+            rootLayout.setOnClickListener { onObjectClickListener(geoObject) }
         }
-    }
-
-    interface OnObjectClickListener {
-        fun onObjectClick(geoObject: GeoObject)
     }
 }

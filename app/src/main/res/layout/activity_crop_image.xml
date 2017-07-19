@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@android:color/black">
+
+    <com.steelkiwi.cropiwa.CropIwaView
+        android:id="@+id/cropView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:ci_dynamic_aspect_ratio="false"
+        app:ci_crop_shape="oval"
+        app:ci_min_crop_width="40dp"
+        app:ci_min_crop_height="40dp"
+        app:ci_draw_grid="false"
+        app:ci_aspect_ratio_w="1"
+        app:ci_aspect_ratio_h="1"
+        app:ci_translation_enabled="true"
+        app:ci_initial_position="centerCrop"
+        app:ci_scale_enabled="true"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonCancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ОТМЕНА"
+            android:theme="@style/Button"/>
+
+        <Button
+            android:id="@+id/buttonSelect"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ОК"
+            android:theme="@style/Button"/>
+
+    </LinearLayout>
+
+</LinearLayout>
