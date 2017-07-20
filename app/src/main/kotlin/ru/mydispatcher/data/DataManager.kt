@@ -4,6 +4,7 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.exceptions.Exceptions
+import okhttp3.RequestBody
 import org.joda.time.DateTime
 import ru.mydispatcher.data.local.PreferencesHelper
 import ru.mydispatcher.data.model.BaseResponse
@@ -77,6 +78,10 @@ class DataManager @Inject constructor(private val api: Api, private val prefs: P
                     offset = offset)
         }.toObservable()
                 .map { it.data.list }
+    }
+
+    fun registerCustomer(params: Map<String, RequestBody>): Completable {
+        return makeRequest { api.registerCustomer(params) }.toCompletable()
     }
 
 }

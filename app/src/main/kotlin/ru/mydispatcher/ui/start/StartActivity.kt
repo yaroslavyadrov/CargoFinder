@@ -12,6 +12,7 @@ import ru.mydispatcher.ui.customer.registration.CustomerRegistrationActivity
 import ru.mydispatcher.util.EXTRA_PHONE_CODE
 import ru.mydispatcher.util.EXTRA_PHONE_NUMBER
 import ru.mydispatcher.util.extensions.addPhoneTextWatcher
+import ru.mydispatcher.util.extensions.onlyDigits
 import ru.mydispatcher.util.extensions.showSnackbar
 import timber.log.Timber
 import javax.inject.Inject
@@ -34,7 +35,7 @@ class StartActivity : BaseActivity(), StartView {
         buttonRegister.setOnClickListener { presenter.showUserTypeDialog() }
         val deviceId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         buttonEnter.setOnClickListener {
-            val phone = editTextPhone.text.filter { it.isDigit() }.toString()
+            val phone = editTextPhone.text.toString().onlyDigits()
             presenter.attemptLogin(textViewCode.text.toString(), phone, deviceId)
         }
     }

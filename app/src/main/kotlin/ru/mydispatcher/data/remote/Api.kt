@@ -1,10 +1,8 @@
 package ru.mydispatcher.data.remote
 
 import io.reactivex.Single
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import okhttp3.RequestBody
+import retrofit2.http.*
 import ru.mydispatcher.data.model.BaseResponse
 import ru.mydispatcher.data.model.CheckCodeResult
 import ru.mydispatcher.data.model.GeoObjectsList
@@ -30,4 +28,8 @@ interface Api {
                    @Query("geo_object_type") geoObjectType: String = "cities", //valid values "cities" "regions"
                    @Query("limit") limit: Int = 30,
                    @Query("offset") offset: Int = 0): Single<BaseResponse<GeoObjectsList>>
+
+    @Multipart
+    @POST("customer/registration/")
+    fun registerCustomer(@PartMap params: Map<String, @JvmSuppressWildcards RequestBody>): Single<BaseResponse<Nothing>>
 }

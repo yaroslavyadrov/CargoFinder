@@ -5,6 +5,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import android.support.annotation.StringRes
 import android.support.v7.widget.PopupMenu
 import android.text.TextUtils
 import com.jakewharton.rxbinding2.widget.textChanges
@@ -20,15 +21,20 @@ import io.reactivex.functions.Function3
 import io.reactivex.subscribers.DisposableSubscriber
 import kotlinx.android.synthetic.main.activity_customer_registration.*
 import kotlinx.android.synthetic.main.view_appbar_with_toolbar.*
+import org.jetbrains.anko.startActivity
 import ru.mydispatcher.R
 import ru.mydispatcher.data.model.GeoObject
 import ru.mydispatcher.ui.base.BaseActivity
 import ru.mydispatcher.ui.base.waitForActivityResult
+import ru.mydispatcher.ui.checkcode.CheckCodeActivity
 import ru.mydispatcher.ui.imagecrop.ImageCropActivity
 import ru.mydispatcher.ui.selectgeoobject.SelectGeoObjectDialog
 import ru.mydispatcher.ui.selectgeoobject.SelectGeoObjectDialog.Companion.CITIES
+import ru.mydispatcher.util.EXTRA_PHONE_CODE
+import ru.mydispatcher.util.EXTRA_PHONE_NUMBER
 import ru.mydispatcher.util.extensions.addPhoneTextWatcher
 import ru.mydispatcher.util.extensions.setBackArrowAndFinishActionOnToolbar
+import ru.mydispatcher.util.extensions.showSnackbar
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -94,6 +100,12 @@ class CustomerRegistrationActivity : BaseActivity(), CustomerRegistrationMvpView
         editTextCity.setOnClickListener {
             presenter.showGeoObjectsDialog()
         }
+        buttonRegister.setOnClickListener {
+            presenter.registrationAttempt(
+                    editTextName.text.toString(),
+                    editTextOrganization.text.toString(),
+                    editTextPhone.text.toString())
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -151,6 +163,14 @@ class CustomerRegistrationActivity : BaseActivity(), CustomerRegistrationMvpView
     override fun showProgressDialog() = showProgressAlert()
 
     override fun hideProgressDialog() = hideProgressAlert()
+
+    override fun showError(message: String) = showSnackbar(editTextName, message)
+
+    override fun showError(@StringRes messageRes: Int) = showSnackbar(editTextName, getString(messageRes))
+
+    override fun openCheckCodeActivity(code: String, phone: String) {
+        startActivity<CheckCodeActivity>(EXTRA_PHONE_CODE to code, EXTRA_PHONE_NUMBER to phone)
+    }
 
     override fun showGeoObjectsDialog() {
         val dialog = SelectGeoObjectDialog.createDialog(CITIES)

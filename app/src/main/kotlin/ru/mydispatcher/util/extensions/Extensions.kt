@@ -1,16 +1,21 @@
 package ru.mydispatcher.util.extensions
 
 import android.content.Context
+import android.net.Uri
 import android.support.design.widget.Snackbar
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.view.View
+import android.webkit.MimeTypeMap
 import android.widget.EditText
+import kotlinx.android.synthetic.main.view_appbar_with_toolbar.*
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import ru.mydispatcher.CargoFinderApplication
 import ru.mydispatcher.R
 import ru.mydispatcher.injection.component.AppComponent
 import ru.mydispatcher.ui.base.BaseActivity
-import kotlinx.android.synthetic.main.view_appbar_with_toolbar.*
+import java.io.File
 
 fun Context.getAppComponent(): AppComponent = (applicationContext as CargoFinderApplication).appComponent
 
@@ -59,4 +64,19 @@ fun BaseActivity.setBackArrowAndFinishActionOnToolbar() {
     val toolbar = this.toolbar ?: return
     toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
     toolbar.setNavigationOnClickListener { finish() }
+}
+
+fun String.toRequestBody(): RequestBody {
+    return RequestBody.create(MediaType.parse("text/plain"), this)
+}
+
+fun File.toRequestBody(): RequestBody {
+    val uri = Uri.fromFile(this)
+    val fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri.toString())
+    val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase())
+    return RequestBody.create(MediaType.parse(mimeType), this)
+}
+
+fun String.onlyDigits(): String {
+    return this.filter { it.isDigit() }
 }
