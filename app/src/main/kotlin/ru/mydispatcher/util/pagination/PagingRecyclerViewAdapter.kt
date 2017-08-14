@@ -6,7 +6,7 @@ import java.util.ArrayList
 
 abstract class PagingRecyclerViewAdapter<T, VH : RecyclerView.ViewHolder> : RecyclerView.Adapter<VH>() {
 
-    protected var items: MutableList<T> = ArrayList()
+    var items: MutableList<T> = mutableListOf()
     var isAllItemsLoaded: Boolean = false
 
     override fun getItemCount(): Int {

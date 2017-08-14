@@ -7,6 +7,7 @@ import io.reactivex.exceptions.Exceptions
 import okhttp3.RequestBody
 import org.joda.time.DateTime
 import ru.mydispatcher.data.local.PreferencesHelper
+import ru.mydispatcher.data.local.PreferencesHelperImpl
 import ru.mydispatcher.data.model.BaseResponse
 import ru.mydispatcher.data.model.CargoFinderException
 import ru.mydispatcher.data.model.GeoObject
@@ -21,7 +22,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DataManager @Inject constructor(private val api: Api, private val prefs: PreferencesHelper) {
+class DataManager @Inject constructor(private val api: Api, private val prefs: PreferencesHelperImpl): PreferencesHelper by prefs {
 
     private inline fun <R> makeRequest(request: Api.() -> Single<BaseResponse<R>>): Single<BaseResponse<R>> {
         return api.request()
@@ -36,8 +37,8 @@ class DataManager @Inject constructor(private val api: Api, private val prefs: P
         val body = GuestTokenBody(deviceId)
         return makeRequest { api.getGuestToken(body) }
                 .doOnSuccess {
-                    prefs.token = it.data.token
-                    prefs.authorizad = false
+                    token = it.data.token
+                    authorized = false
                 }
                 .toCompletable()
     }
@@ -52,8 +53,8 @@ class DataManager @Inject constructor(private val api: Api, private val prefs: P
         val body = CheckCodeBody(code)
         return makeRequest { checkCode(body) }
                 .doOnSuccess {
-                    prefs.token = it.data.token
-                    prefs.authorizad = true
+                    token = it.data.token
+                    authorized = true
                 }
                 .map { result ->
                     if (result.data.userType == UserType.CUSTOMER.type) {
@@ -62,12 +63,6 @@ class DataManager @Inject constructor(private val api: Api, private val prefs: P
                         UserType.DRIVER
                     }
                 }
-    }
-
-    fun getPreviousDateOfSms(): DateTime = DEFAULT_DATE_FORMATTER.parseDateTime(prefs.previousSmsTime)
-
-    fun setPreviousDateOfSms(date: DateTime) {
-        prefs.previousSmsTime = date.toString(DATE_TIME_FORMAT)
     }
 
     fun getGeoObjects(query: String, geoObjectType: String, offset: Int): Observable<List<GeoObject>> {

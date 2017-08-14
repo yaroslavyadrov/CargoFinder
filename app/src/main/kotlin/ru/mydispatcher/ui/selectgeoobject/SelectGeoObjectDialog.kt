@@ -97,7 +97,7 @@ class SelectGeoObjectDialog : DialogFragment(), SelectGeoObjectView {
         super.onDestroy()
     }
 
-    fun onObjectClick(listener: (GeoObject) -> Unit ) {
+    fun onObjectClick(listener: (GeoObject) -> Unit) {
         onObjectClickListener = listener
     }
 

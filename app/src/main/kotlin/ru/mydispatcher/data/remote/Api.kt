@@ -32,4 +32,9 @@ interface Api {
     @Multipart
     @POST("customer/registration/")
     fun registerCustomer(@PartMap params: Map<String, @JvmSuppressWildcards RequestBody>): Single<BaseResponse<Nothing>>
+
+    @GET("customer/orders/")
+    fun getCustomerOrders(@Query("order_type") orderType: String,//valid values "active" "inactive"
+                   @Query("limit") limit: Int = 30,
+                   @Query("offset") offset: Int = 0): Single<BaseResponse<GeoObjectsList>>
 }

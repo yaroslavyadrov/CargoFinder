@@ -1,15 +1,15 @@
 package ru.mydispatcher.ui.checkcode;
 
-import ru.mydispatcher.R
-import ru.mydispatcher.data.DataManager;
-import ru.mydispatcher.data.model.CargoFinderException
-import ru.mydispatcher.ui.base.BasePresenter;
-import ru.mydispatcher.util.UserType
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.joda.time.DateTime
 import org.joda.time.Duration
+import ru.mydispatcher.R
+import ru.mydispatcher.data.DataManager
+import ru.mydispatcher.data.model.CargoFinderException
+import ru.mydispatcher.ui.base.BasePresenter
+import ru.mydispatcher.util.UserType
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -23,7 +23,7 @@ class CheckCodePresenter @Inject constructor(private val dataManager: DataManage
 
     fun sendCode(code: String, phone: String) {
         Timber.d("send code")
-        val previousSms = dataManager.getPreviousDateOfSms()
+        val previousSms = dataManager.previousSmsTime
         val timeSincePreviousSms = Duration(previousSms, DateTime())
         when (timeSincePreviousSms.standardSeconds) {
             in 0..120 -> showTimer(120 - timeSincePreviousSms.standardSeconds)
@@ -36,7 +36,7 @@ class CheckCodePresenter @Inject constructor(private val dataManager: DataManage
                         .subscribe(
                                 {
                                     showTimer(120)
-                                    dataManager.setPreviousDateOfSms(DateTime())
+                                    dataManager.previousSmsTime = DateTime()
                                 },
                                 { error ->
                                     Timber.e(error)

@@ -11,7 +11,10 @@ import android.view.inputmethod.InputConnection
 import android.view.inputmethod.InputConnectionWrapper
 
 
-class CodeEditText : AppCompatEditText, TextWatcher {
+class CodeEditText :
+        AppCompatEditText,
+        TextWatcher {
+
     constructor(context: Context) : super(context) {
         addTextChangedListener(this)
     }

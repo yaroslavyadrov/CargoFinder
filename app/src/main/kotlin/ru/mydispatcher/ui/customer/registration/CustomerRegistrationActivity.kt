@@ -120,10 +120,10 @@ class CustomerRegistrationActivity : BaseActivity(), CustomerRegistrationMvpView
 
     override fun onDestroy() {
         presenter.destroy()
-        super.onDestroy()
         if (!disposableSubscriber.isDisposed) {
             disposableSubscriber.dispose()
         }
+        super.onDestroy()
     }
 
     private fun initView() {

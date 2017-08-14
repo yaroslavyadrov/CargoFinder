@@ -17,7 +17,10 @@ import ru.mydispatcher.util.extensions.showSnackbar
 import javax.inject.Inject
 
 
-class CheckCodeActivity : BaseActivity(), CheckCodeMvpView {
+class CheckCodeActivity :
+        BaseActivity(),
+        CheckCodeMvpView {
+
     override fun getLayoutResId() = R.layout.activity_check_code
 
     @Inject lateinit var presenter: CheckCodePresenter
@@ -43,7 +46,7 @@ class CheckCodeActivity : BaseActivity(), CheckCodeMvpView {
         textViewResend.setOnClickListener { presenter.sendCode(code, phone) }
     }
 
-    private val textWatcher : TextWatcher = object : TextWatcher by emptyWatcher {
+    private val textWatcher: TextWatcher = object : TextWatcher by emptyWatcher {
         override fun afterTextChanged(s: Editable?) {
             if (!s.isNullOrEmpty()) {
                 val code = editTextSymbol1.text.toString() + editTextSymbol2.text.toString() +

@@ -13,17 +13,19 @@ import javax.inject.Inject
 
 class GeoObjectsAdapter @Inject
 constructor() : PagingRecyclerViewAdapter<GeoObject, GeoObjectsAdapter.ViewHolder>() {
+
     private var onObjectClickListener: (GeoObject) -> Unit = {}
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) = ViewHolder(
-            LayoutInflater.from(parent?.context)
-                    .inflate(R.layout.item_city, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) =
+            ViewHolder(
+                    LayoutInflater.from(parent?.context)
+                            .inflate(R.layout.item_city, parent, false))
 
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         holder?.bind(getItem(position))
     }
 
-    fun onObjectClick(listener: (GeoObject) -> Unit ) {
+    fun onObjectClick(listener: (GeoObject) -> Unit) {
         onObjectClickListener = listener
     }
 
