@@ -3,7 +3,9 @@ package ru.mydispatcher.ui.start
 import android.os.Bundle
 import android.provider.Settings
 import android.support.v7.app.AlertDialog
-import kotlinx.android.synthetic.main.layout_activity_start.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import org.jetbrains.anko.startActivity
 import ru.mydispatcher.R
 import ru.mydispatcher.ui.base.BaseActivity
@@ -12,6 +14,7 @@ import ru.mydispatcher.ui.customer.registration.CustomerRegistrationActivity
 import ru.mydispatcher.util.EXTRA_PHONE_CODE
 import ru.mydispatcher.util.EXTRA_PHONE_NUMBER
 import ru.mydispatcher.util.extensions.addPhoneTextWatcher
+import ru.mydispatcher.util.extensions.bindView
 import ru.mydispatcher.util.extensions.onlyDigits
 import ru.mydispatcher.util.extensions.showSnackbar
 import timber.log.Timber
@@ -22,9 +25,15 @@ class StartActivity : BaseActivity(), StartView {
 
     @Inject lateinit var presenter: StartPresenter
 
+    private val editTextPhone by bindView<EditText>(R.id.editTextPhone)
+    private val textViewCode by bindView<TextView>(R.id.textViewCode)
+    private val buttonRegister by bindView<Button>(R.id.buttonRegister)
+    private val buttonEnter by bindView<Button>(R.id.buttonEnter)
+
     private lateinit var userTypeDialog: AlertDialog
 
     override fun getLayoutResId() = R.layout.layout_activity_start
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

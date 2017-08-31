@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import ru.mydispatcher.R
 import ru.mydispatcher.data.model.GeoObject
+import ru.mydispatcher.util.extensions.bindView
 import ru.mydispatcher.util.pagination.PagingRecyclerViewAdapter
 import javax.inject.Inject
 
@@ -30,9 +31,10 @@ constructor() : PagingRecyclerViewAdapter<GeoObject, GeoObjectsAdapter.ViewHolde
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val rootLayout: View = itemView.findViewById(R.id.layoutRoot)
-        val textViewName: TextView = itemView.findViewById(R.id.textViewCityName) as TextView
-        val textViewRegion: TextView = itemView.findViewById(R.id.textViewCityRegion) as TextView
+
+        private val rootLayout by bindView<View>(R.id.layoutRoot)
+        private val textViewName by bindView<TextView>(R.id.textViewCityName)
+        private val textViewRegion by bindView<TextView>(R.id.textViewCityRegion)
 
         fun bind(geoObject: GeoObject) {
             textViewName.text = geoObject.name

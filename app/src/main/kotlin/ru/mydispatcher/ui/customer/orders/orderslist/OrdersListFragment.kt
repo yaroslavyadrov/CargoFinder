@@ -3,19 +3,21 @@ package ru.mydispatcher.ui.customer.orders.orderslist
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_orders.*
 import ru.mydispatcher.R
 import ru.mydispatcher.data.model.CustomerOrder
 import ru.mydispatcher.ui.base.BaseActivity
+import ru.mydispatcher.util.extensions.bindView
 import javax.inject.Inject
 
 
 class OrdersListFragment :
         Fragment(),
         OrderListMvpView {
+    private val recyclerViewOrders by bindView<RecyclerView>(R.id.recyclerViewOrders)
 
     @Inject lateinit var presenter: OrderListPresenter
     @Inject lateinit var ordersAdapter: OrdersAdapter

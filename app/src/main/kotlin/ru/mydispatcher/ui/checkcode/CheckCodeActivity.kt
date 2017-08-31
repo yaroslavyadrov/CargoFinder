@@ -1,18 +1,22 @@
 package ru.mydispatcher.ui.checkcode
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.Toolbar
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.TypedValue
-import kotlinx.android.synthetic.main.activity_check_code.*
-import kotlinx.android.synthetic.main.view_appbar_with_toolbar.*
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import android.widget.TextView
 import ru.mydispatcher.R
 import ru.mydispatcher.ui.base.BaseActivity
 import ru.mydispatcher.util.EXTRA_PHONE_CODE
 import ru.mydispatcher.util.EXTRA_PHONE_NUMBER
 import ru.mydispatcher.util.emptyWatcher
-import ru.mydispatcher.util.extensions.setBackArrowAndFinishActionOnToolbar
+import ru.mydispatcher.util.extensions.bindView
+import ru.mydispatcher.util.extensions.setBackArrowAndAction
 import ru.mydispatcher.util.extensions.showSnackbar
 import javax.inject.Inject
 
@@ -21,16 +25,24 @@ class CheckCodeActivity :
         BaseActivity(),
         CheckCodeMvpView {
 
-    override fun getLayoutResId() = R.layout.activity_check_code
+    private val toolbar by bindView<Toolbar>(R.id.toolbar)
+    private val editTextSymbol1 by bindView<CodeEditText>(R.id.editTextSymbol1)
+    private val editTextSymbol2 by bindView<CodeEditText>(R.id.editTextSymbol2)
+    private val editTextSymbol3 by bindView<CodeEditText>(R.id.editTextSymbol3)
+    private val editTextSymbol4 by bindView<CodeEditText>(R.id.editTextSymbol4)
+    private val editTextSymbol5 by bindView<CodeEditText>(R.id.editTextSymbol5)
+    private val textViewResend by bindView<TextView>(R.id.textViewResend)
+    private val textViewDetails by bindView<TextView>(R.id.textViewDetails)
 
     @Inject lateinit var presenter: CheckCodePresenter
 
+    override fun getLayoutResId() = R.layout.activity_check_code
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityComponent?.inject(this)
         presenter.bind(this)
         toolbar.setTitle(R.string.check_code_title)
-        setBackArrowAndFinishActionOnToolbar()
+        toolbar.setBackArrowAndAction { finish() }
         val code = intent.getStringExtra(EXTRA_PHONE_CODE) ?: throw RuntimeException("Value code needed")
         val phone = intent.getStringExtra(EXTRA_PHONE_NUMBER) ?: throw RuntimeException("Value phone needed")
         presenter.showPhoneNumberDetails(code, phone)

@@ -39,7 +39,7 @@ object PaginationUtil {
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .distinctUntilChanged()
                 .observeOn(Schedulers.newThread())
-                .switchMap { offset -> getPagingObservable(recyclerView, pagingListener, pagingListener.onNextPage(offset!!), startNumberOfRetryAttempt, offset, retryCount) }
+                .switchMap { offset -> getPagingObservable(recyclerView, pagingListener, pagingListener.onNextPage(offset), startNumberOfRetryAttempt, offset, retryCount) }
     }
 
     private fun getScrollObservable(recyclerView: RecyclerView, limit: Int, emptyListCount: Int): Observable<Int> {

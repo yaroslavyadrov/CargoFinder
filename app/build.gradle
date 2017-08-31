@@ -2,7 +2,6 @@ int minSdk = hasProperty('devMinSdk') ? devMinSdk.toInteger() : rootProject.ext.
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
 
 def getVersionCode = { ->
     try {
@@ -128,7 +127,7 @@ dependencies {
 
     // Rx
     compile "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}"
-    compile 'io.reactivex.rxjava2:rxjava:2.1.0'
+    compile 'io.reactivex.rxjava2:rxjava:2.1.2'
 
     // Retrofit
     compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"

@@ -1,19 +1,24 @@
 package ru.mydispatcher.ui.customer.orders
 
 import android.os.Bundle
+import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
-import kotlinx.android.synthetic.main.activity_customer_orders.*
+import android.support.v4.view.ViewPager
 import ru.mydispatcher.R
 import ru.mydispatcher.ui.base.BaseActivity
 import ru.mydispatcher.ui.customer.orders.orderslist.OrdersListFragment
+import ru.mydispatcher.util.extensions.bindView
 import javax.inject.Inject
 
 
 class CustomerOrdersActivity :
         BaseActivity(),
         CustomerOrdersView {
+
+    private val viewPager by bindView<ViewPager>(R.id.viewPager)
+    private val tabLayout by bindView<TabLayout>(R.id.tabLayout)
 
     @Inject lateinit var presenter: CustomerOrdersPresenter
 

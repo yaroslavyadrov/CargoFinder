@@ -7,21 +7,19 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.widget.Button
+import com.steelkiwi.cropiwa.CropIwaView
 import com.steelkiwi.cropiwa.config.CropIwaSaveConfig
-import kotlinx.android.synthetic.main.activity_crop_image.*
 import ru.mydispatcher.R
+import ru.mydispatcher.util.extensions.bindView
 import java.io.File
 
 
 class ImageCropActivity : AppCompatActivity() {
-    companion object {
-        val IMAGE_URI = "extraImageUri"
-        fun createStartIntent(context: Context, imageUri: Uri): Intent {
-            val intent = Intent(context, ImageCropActivity::class.java)
-            intent.putExtra(IMAGE_URI, imageUri)
-            return intent
-        }
-    }
+
+    private val cropView by bindView<CropIwaView>(R.id.cropView)
+    private val buttonSelect by bindView<Button>(R.id.buttonSelect)
+    private val buttonCancel by bindView<Button>(R.id.buttonCancel)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +41,15 @@ class ImageCropActivity : AppCompatActivity() {
         buttonCancel.setOnClickListener {
             setResult(RESULT_CANCELED)
             finish()
+        }
+    }
+
+    companion object {
+        val IMAGE_URI = "extraImageUri"
+        fun createStartIntent(context: Context, imageUri: Uri): Intent {
+            val intent = Intent(context, ImageCropActivity::class.java)
+            intent.putExtra(IMAGE_URI, imageUri)
+            return intent
         }
     }
 }

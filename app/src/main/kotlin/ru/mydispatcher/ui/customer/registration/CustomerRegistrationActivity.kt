@@ -7,7 +7,11 @@ import android.content.Intent
 import android.net.Uri
 import android.support.annotation.StringRes
 import android.support.v7.widget.PopupMenu
+import android.support.v7.widget.Toolbar
 import android.text.TextUtils
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
 import com.jakewharton.rxbinding2.widget.textChanges
 import com.kbeanie.multipicker.api.CameraImagePicker
 import com.kbeanie.multipicker.api.ImagePicker
@@ -19,8 +23,6 @@ import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.functions.Function3
 import io.reactivex.subscribers.DisposableSubscriber
-import kotlinx.android.synthetic.main.activity_customer_registration.*
-import kotlinx.android.synthetic.main.view_appbar_with_toolbar.*
 import org.jetbrains.anko.startActivity
 import ru.mydispatcher.R
 import ru.mydispatcher.data.model.GeoObject
@@ -33,13 +35,26 @@ import ru.mydispatcher.ui.selectgeoobject.SelectGeoObjectDialog.Companion.CITIES
 import ru.mydispatcher.util.EXTRA_PHONE_CODE
 import ru.mydispatcher.util.EXTRA_PHONE_NUMBER
 import ru.mydispatcher.util.extensions.addPhoneTextWatcher
-import ru.mydispatcher.util.extensions.setBackArrowAndFinishActionOnToolbar
+import ru.mydispatcher.util.extensions.bindView
+import ru.mydispatcher.util.extensions.setBackArrowAndAction
 import ru.mydispatcher.util.extensions.showSnackbar
 import timber.log.Timber
 import javax.inject.Inject
 
 
-class CustomerRegistrationActivity : BaseActivity(), CustomerRegistrationMvpView {
+class CustomerRegistrationActivity :
+        BaseActivity(),
+        CustomerRegistrationMvpView {
+
+    private val toolbar by bindView<Toolbar>(R.id.toolbar)
+    private val imageViewEditAvatar by bindView<ImageView>(R.id.imageViewEditAvatar)
+    private val editTextPhone by bindView<EditText>(R.id.editTextPhone)
+    private val editTextCity by bindView<EditText>(R.id.editTextCity)
+    private val editTextName by bindView<EditText>(R.id.editTextName)
+    private val editTextOrganization by bindView<EditText>(R.id.editTextOrganization)
+    private val buttonRegister by bindView<Button>(R.id.buttonRegister)
+    private val imageViewAvatar by bindView<ImageView>(R.id.imageViewAvatar)
+
 
     @Inject lateinit var presenter: CustomerRegistrationPresenter
 
@@ -90,7 +105,7 @@ class CustomerRegistrationActivity : BaseActivity(), CustomerRegistrationMvpView
         activityComponent?.inject(this)
         presenter.bind(this)
         toolbar.setTitle(R.string.registration_title)
-        setBackArrowAndFinishActionOnToolbar()
+        toolbar.setBackArrowAndAction { finish() }
         editTextPhone.addPhoneTextWatcher()
         initView()
         checkValidation()

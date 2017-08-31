@@ -3,12 +3,12 @@ package ru.mydispatcher.util.extensions
 import android.content.Context
 import android.net.Uri
 import android.support.design.widget.Snackbar
+import android.support.v7.widget.Toolbar
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.view.View
 import android.webkit.MimeTypeMap
 import android.widget.EditText
-import kotlinx.android.synthetic.main.view_appbar_with_toolbar.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import ru.mydispatcher.CargoFinderApplication
@@ -60,10 +60,9 @@ fun EditText.addPhoneTextWatcher() {
     })
 }
 
-fun BaseActivity.setBackArrowAndFinishActionOnToolbar() {
-    val toolbar = this.toolbar ?: return
-    toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
-    toolbar.setNavigationOnClickListener { finish() }
+fun Toolbar.setBackArrowAndAction(action: () -> Unit) {
+    setNavigationIcon(R.drawable.ic_arrow_back)
+    setNavigationOnClickListener { action() }
 }
 
 fun String.toRequestBody(): RequestBody {
@@ -79,4 +78,12 @@ fun File.toRequestBody(): RequestBody {
 
 fun String.onlyDigits(): String {
     return this.filter { it.isDigit() }
+}
+
+fun View.show() {
+    visibility = View.VISIBLE
+}
+
+fun View.hide() {
+    visibility = View.GONE
 }

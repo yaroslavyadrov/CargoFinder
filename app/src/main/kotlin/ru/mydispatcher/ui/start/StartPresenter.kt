@@ -1,13 +1,11 @@
 package ru.mydispatcher.ui.start
 
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import ru.mydispatcher.R
 import ru.mydispatcher.data.DataManager
 import ru.mydispatcher.data.model.CargoFinderException
 import ru.mydispatcher.ui.base.BasePresenter
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.*
-import ru.mydispatcher.ui.base.MvpView
 import timber.log.Timber
 import javax.inject.Inject
 
