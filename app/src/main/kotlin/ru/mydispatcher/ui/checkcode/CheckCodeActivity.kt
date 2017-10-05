@@ -1,17 +1,16 @@
 package ru.mydispatcher.ui.checkcode
 
-import android.content.Context
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.Toolbar
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.TypedValue
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.TextView
+import org.jetbrains.anko.startActivity
 import ru.mydispatcher.R
 import ru.mydispatcher.ui.base.BaseActivity
+import ru.mydispatcher.ui.customer.orders.CustomerOrdersActivity
 import ru.mydispatcher.util.EXTRA_PHONE_CODE
 import ru.mydispatcher.util.EXTRA_PHONE_NUMBER
 import ru.mydispatcher.util.emptyWatcher
@@ -54,8 +53,8 @@ class CheckCodeActivity :
         editTextSymbol5.addTextChangedListener(textWatcher)
         editTextSymbol1.isFocusableInTouchMode = true
         editTextSymbol1.requestFocus()
-        presenter.sendCode(code, phone)
         textViewResend.setOnClickListener { presenter.sendCode(code, phone) }
+        presenter.onScreenOpen()
     }
 
     private val textWatcher: TextWatcher = object : TextWatcher by emptyWatcher {
@@ -112,5 +111,9 @@ class CheckCodeActivity :
             setBackgroundResource(outValue.resourceId)
             isClickable = true
         }
+    }
+
+    override fun openCustomerStartActivity() {
+        startActivity<CustomerOrdersActivity>()
     }
 }

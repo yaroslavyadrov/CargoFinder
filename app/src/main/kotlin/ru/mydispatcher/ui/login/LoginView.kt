@@ -1,10 +1,10 @@
-package ru.mydispatcher.ui.start
+package ru.mydispatcher.ui.login
 
 import android.support.annotation.StringRes
 import ru.mydispatcher.ui.base.MvpView
 
 
-interface StartView : MvpView {
+interface LoginView : MvpView {
 
     fun showUserTypeDialog()
     fun openDriverRegistration()

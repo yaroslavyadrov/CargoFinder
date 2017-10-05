@@ -4,6 +4,7 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.exceptions.Exceptions
+import io.reactivex.functions.Function
 import okhttp3.RequestBody
 import org.joda.time.DateTime
 import ru.mydispatcher.data.local.PreferencesHelper
@@ -22,7 +23,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DataManager @Inject constructor(private val api: Api, private val prefs: PreferencesHelperImpl): PreferencesHelper by prefs {
+class DataManager @Inject constructor(
+        private val api: Api,
+        private val prefs: PreferencesHelperImpl
+): PreferencesHelper by prefs {
 
     private inline fun <R> makeRequest(request: Api.() -> Single<BaseResponse<R>>): Single<BaseResponse<R>> {
         return api.request()

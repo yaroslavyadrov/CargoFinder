@@ -1,4 +1,4 @@
-package ru.mydispatcher.ui.start
+package ru.mydispatcher.ui.login
 
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -9,7 +9,7 @@ import ru.mydispatcher.ui.base.BasePresenter
 import timber.log.Timber
 import javax.inject.Inject
 
-class StartPresenter @Inject constructor(private val dataManager: DataManager) : BasePresenter<StartView>() {
+class LoginPresenter @Inject constructor(private val dataManager: DataManager) : BasePresenter<LoginView>() {
 
     fun showUserTypeDialog() = view?.showUserTypeDialog()
     fun openDriverRegistration() = view?.openDriverRegistration()
@@ -26,16 +26,29 @@ class StartPresenter @Inject constructor(private val dataManager: DataManager) :
                         .doOnEvent { view?.hideProgressDialog() }
                         .subscribe(
                                 {
-                                    view?.openCheckCodeActivity(code, phone)
+                                    requestCode(code, phone)
                                 },
-                                { error ->
-                                    Timber.e(error)
-                                    when (error.cause) {
-                                        is CargoFinderException -> view?.showError((error.cause as CargoFinderException).message)
-                                        else -> view?.showError(R.string.unexpected_error)
-                                    }
-                                }))
+                                this::handleError))
             }
         }
+    }
+
+    private fun handleError(error: Throwable) {
+        Timber.e(error)
+        when (error.cause) {
+            is CargoFinderException -> view?.showError((error.cause as CargoFinderException).message)
+            else -> view?.showError(R.string.unexpected_error)
+        }
+    }
+
+    private fun requestCode(code: String, phone: String) {
+        disposables.add(dataManager.sendCode(code, phone)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        {
+                            view?.openCheckCodeActivity(code, phone)
+                        },
+                        this::handleError))
     }
 }

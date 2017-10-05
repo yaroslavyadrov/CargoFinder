@@ -16,46 +16,47 @@ import javax.inject.Inject
 
 
 class CheckCodePresenter @Inject constructor(private val dataManager: DataManager) : BasePresenter<CheckCodeMvpView>() {
+
     fun showPhoneNumberDetails(code: String, phone: String) {
         val number = "$code (${phone.subSequence(0, 3)}) ${phone.subSequence(3, 6)}-${phone.subSequence(6, 8)}-${phone.subSequence(8, 10)}"
         view?.showDetails(number)
     }
 
-    fun sendCode(code: String, phone: String) {
-        Timber.d("send code")
+    fun onScreenOpen() {
         val previousSms = dataManager.previousSmsTime
         val timeSincePreviousSms = Duration(previousSms, DateTime())
         when (timeSincePreviousSms.standardSeconds) {
             in 0..120 -> showTimer(120 - timeSincePreviousSms.standardSeconds)
-            else -> {
-                view?.showProgress()
-                disposables.add(dataManager.sendCode(code, phone)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnEvent { view?.hideProgress() }
-                        .subscribe(
-                                {
-                                    showTimer(120)
-                                    dataManager.previousSmsTime = DateTime()
-                                },
-                                { error ->
-                                    Timber.e(error)
-                                    when (error.cause) {
-                                        is CargoFinderException -> view?.showError((error.cause as CargoFinderException).message)
-                                        else -> view?.showError(R.string.unexpected_error)
-                                    }
-                                })
-                )
-            }
+            else -> showTimer(120)
         }
     }
 
-    fun showTimer(seconds: Long) {
-        val start = seconds
+    fun sendCode(code: String, phone: String) {
+        view?.showProgress()
+        disposables.add(dataManager.sendCode(code, phone)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnEvent { view?.hideProgress() }
+                .subscribe(
+                        {
+                            showTimer(120)
+                            dataManager.previousSmsTime = DateTime()
+                        },
+                        { error ->
+                            Timber.e(error)
+                            when (error.cause) {
+                                is CargoFinderException -> view?.showError((error.cause as CargoFinderException).message)
+                                else -> view?.showError(R.string.unexpected_error)
+                            }
+                        }))
+    }
+
+
+    private fun showTimer(seconds: Long) {
         disposables.add(Observable.interval(1, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.computation())
                 .take(seconds)
-                .map { passed -> start.toInt() - passed.toInt() }
+                .map { passed -> seconds.toInt() - passed.toInt() }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { remain -> view?.showRemain(remain) },
@@ -73,7 +74,7 @@ class CheckCodePresenter @Inject constructor(private val dataManager: DataManage
                         {
                             when (it) {
                                 UserType.DRIVER -> Timber.d("driver")
-                                UserType.CUSTOMER -> Timber.d("customer")
+                                UserType.CUSTOMER -> view?.openCustomerStartActivity()
                             }
                         },
                         { error ->
@@ -85,6 +86,5 @@ class CheckCodePresenter @Inject constructor(private val dataManager: DataManage
                         })
         )
     }
-
 
 }

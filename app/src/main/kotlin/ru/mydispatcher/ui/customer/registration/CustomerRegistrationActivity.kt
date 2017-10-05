@@ -58,9 +58,9 @@ class CustomerRegistrationActivity :
 
     @Inject lateinit var presenter: CustomerRegistrationPresenter
 
-    lateinit var nameFlowable: Flowable<String>
-    lateinit var phoneFlowable: Flowable<String>
-    lateinit var cityFlowable: Flowable<String>
+    private lateinit var nameFlowable: Flowable<String>
+    private lateinit var phoneFlowable: Flowable<String>
+    private lateinit var cityFlowable: Flowable<String>
     private var isValidForm: Boolean = false
     lateinit private var disposableSubscriber: DisposableSubscriber<Boolean>
     private val cameraImagePicker: CameraImagePicker by lazy {
@@ -69,7 +69,7 @@ class CustomerRegistrationActivity :
     private val internalStoragePhotoPicker: ImagePicker by lazy {
         ImagePicker(this).apply { setImagePickerCallback(imagePicker) }
     }
-    val imagePicker: ImagePickerCallback by lazy {
+    private val imagePicker: ImagePickerCallback by lazy {
         object : ImagePickerCallback {
             override fun onImagesChosen(images: MutableList<ChosenImage>?) {
                 images?.let {
@@ -228,7 +228,7 @@ class CustomerRegistrationActivity :
 
     override fun cropPhoto(uri: Uri) {
         waitForActivityResult(ImageCropActivity.createStartIntent(this, uri)) { intent ->
-            presenter.photoCropped(intent.getParcelableExtra(ImageCropActivity.IMAGE_URI))
+            presenter.photoCropped(ImageCropActivity.getImageUriFromIntent(intent))
         }
         hideProgressAlert()
     }

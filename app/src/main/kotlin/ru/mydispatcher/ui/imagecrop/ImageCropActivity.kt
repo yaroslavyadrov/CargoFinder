@@ -21,13 +21,14 @@ class ImageCropActivity : AppCompatActivity() {
     private val buttonSelect by bindView<Button>(R.id.buttonSelect)
     private val buttonCancel by bindView<Button>(R.id.buttonCancel)
 
+    private val uri by lazy { intent.getParcelableExtra<Uri>(IMAGE_URI) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_crop_image)
-        val uri: Uri = intent.getParcelableExtra(IMAGE_URI)
         cropView.setImageUri(uri)
-        cropView.setCropSaveCompleteListener { uri ->
-            val intent = Intent().apply { putExtra(IMAGE_URI, uri) }
+        cropView.setCropSaveCompleteListener { imageUri ->
+            val intent = Intent().apply { putExtra(IMAGE_URI, imageUri) }
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
@@ -45,12 +46,14 @@ class ImageCropActivity : AppCompatActivity() {
     }
 
     companion object {
-        val IMAGE_URI = "extraImageUri"
+        private val IMAGE_URI = "extraImageUri"
         fun createStartIntent(context: Context, imageUri: Uri): Intent {
             val intent = Intent(context, ImageCropActivity::class.java)
             intent.putExtra(IMAGE_URI, imageUri)
             return intent
         }
+
+        fun getImageUriFromIntent(intent: Intent): Uri = intent.getParcelableExtra(IMAGE_URI)
     }
 }
 

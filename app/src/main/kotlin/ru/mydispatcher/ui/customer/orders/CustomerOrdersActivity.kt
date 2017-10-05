@@ -47,7 +47,7 @@ class CustomerOrdersActivity :
 
 
     inner class PagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
-        val PAGE_COUNT = 2
+        private val PAGE_COUNT = 2
 
         override fun getItem(position: Int) = when (position) {
             0 -> Fragments.ACTIVE.fragment

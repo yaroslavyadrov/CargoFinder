@@ -11,4 +11,5 @@ interface CheckCodeMvpView : MvpView {
     fun hideProgress()
     fun showError(message: String)
     fun showError(@StringRes messageRes: Int)
+    fun openCustomerStartActivity()
 }

@@ -7,6 +7,7 @@ import ru.mydispatcher.ui.customer.orders.CustomerOrdersActivity
 import ru.mydispatcher.ui.customer.orders.orderslist.OrdersListFragment
 import ru.mydispatcher.ui.customer.registration.CustomerRegistrationActivity
 import ru.mydispatcher.ui.selectgeoobject.SelectGeoObjectDialog
+import ru.mydispatcher.ui.login.LoginActivity
 import ru.mydispatcher.ui.start.StartActivity
 
 
@@ -17,7 +18,8 @@ interface ActivityComponent {
     fun inject(fragment: SelectGeoObjectDialog)
     fun inject(fragment: OrdersListFragment)
 
-    fun inject(activity: StartActivity)
+    fun inject(startActivity: StartActivity)
+    fun inject(activity: LoginActivity)
     fun inject(activity: CustomerRegistrationActivity)
     fun inject(activity: CheckCodeActivity)
     fun inject(activity: CustomerOrdersActivity)
