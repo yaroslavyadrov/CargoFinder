@@ -23,4 +23,7 @@
     <string name="registration_title">Регистрация</string>
     <string name="search_city_hint">Название города</string>
     <string name="search_city_nothing_found">Ничего не найдено</string>
+    <string name="error_view_title">К сожалению, произошла ошибка</string>
+    <string name="error_retry">Попробовать еще раз</string>
+    <string name="orders_error_no_orders">У вас пока нет заказов. Чтобы создать заказ нажмите на кнопку + внизу экрана</string>
 </resources>

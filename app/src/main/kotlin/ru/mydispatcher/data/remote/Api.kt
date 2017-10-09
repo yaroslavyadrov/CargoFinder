@@ -3,10 +3,7 @@ package ru.mydispatcher.data.remote
 import io.reactivex.Single
 import okhttp3.RequestBody
 import retrofit2.http.*
-import ru.mydispatcher.data.model.BaseResponse
-import ru.mydispatcher.data.model.CheckCodeResult
-import ru.mydispatcher.data.model.GeoObjectsList
-import ru.mydispatcher.data.model.Token
+import ru.mydispatcher.data.model.*
 import ru.mydispatcher.data.remote.postparams.CheckCodeBody
 import ru.mydispatcher.data.remote.postparams.GuestTokenBody
 import ru.mydispatcher.data.remote.postparams.SendCodeBody
@@ -36,5 +33,5 @@ interface Api {
     @GET("customer/orders/")
     fun getCustomerOrders(@Query("order_type") orderType: String,//valid values "active" "inactive"
                    @Query("limit") limit: Int = 30,
-                   @Query("offset") offset: Int = 0): Single<BaseResponse<GeoObjectsList>>
+                   @Query("offset") offset: Int = 0): Single<BaseResponse<CustomerOrdersResponse>>
 }

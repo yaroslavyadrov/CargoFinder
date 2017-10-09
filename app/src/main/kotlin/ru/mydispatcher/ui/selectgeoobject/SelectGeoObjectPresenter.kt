@@ -16,15 +16,15 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class SelectGeoObjectPresenter @Inject constructor(private val dataManager: DataManager) : BasePresenter<SelectGeoObjectView>() {
-    var searchObjects: Disposable? = null
+    private var searchObjects: Disposable? = null
 
     override fun destroy() {
-        searchObjects?.apply { dispose() }
+        searchObjects?.dispose()
         super.destroy()
     }
 
     fun getObjects(recyclerView: RecyclerView, geoObjectType: String, query: String) {
-        searchObjects?.apply { dispose() }
+        searchObjects?.dispose()
         view?.showLoading()
         searchObjects = PaginationUtil.paging(
                 recyclerView,

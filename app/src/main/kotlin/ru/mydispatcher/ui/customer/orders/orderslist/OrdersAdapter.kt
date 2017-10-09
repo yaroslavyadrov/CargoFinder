@@ -10,11 +10,7 @@ import javax.inject.Inject
 
 
 class OrdersAdapter @Inject constructor() : RecyclerView.Adapter<OrdersAdapter.ViewHolder>() {
-    var items: List<CustomerOrder> = emptyList()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+    var items: MutableList<CustomerOrder> = mutableListOf()
 
     private var onItemClick: (CustomerOrder) -> Unit = {}
 
@@ -23,6 +19,14 @@ class OrdersAdapter @Inject constructor() : RecyclerView.Adapter<OrdersAdapter.V
     }
 
     fun getItem(position: Int) = items[position]
+
+    fun addItems(orders: List<CustomerOrder>) {
+        val lastPosition = items.size - 1
+        items.addAll(orders)
+        if (lastPosition >= 0) {
+            notifyItemRangeInserted(lastPosition, orders.size)
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
