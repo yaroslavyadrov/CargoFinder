@@ -35,9 +35,9 @@ class CheckCodeActivity :
 
     @Inject lateinit var presenter: CheckCodePresenter
 
-    override fun getLayoutResId() = R.layout.activity_check_code
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_check_code)
         activityComponent?.inject(this)
         presenter.bind(this)
         toolbar.setTitle(R.string.check_code_title)

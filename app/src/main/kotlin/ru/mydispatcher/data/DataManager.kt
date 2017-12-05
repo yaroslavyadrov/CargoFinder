@@ -7,9 +7,13 @@ import io.reactivex.exceptions.Exceptions
 import okhttp3.RequestBody
 import ru.mydispatcher.data.local.PreferencesHelper
 import ru.mydispatcher.data.local.PreferencesHelperImpl
-import ru.mydispatcher.data.model.*
+import ru.mydispatcher.data.model.BaseResponse
+import ru.mydispatcher.data.model.CargoFinderException
+import ru.mydispatcher.data.model.CustomerOrder
+import ru.mydispatcher.data.model.GeoObject
 import ru.mydispatcher.data.remote.Api
 import ru.mydispatcher.data.remote.postparams.CheckCodeBody
+import ru.mydispatcher.data.remote.postparams.CreateOrderParams
 import ru.mydispatcher.data.remote.postparams.GuestTokenBody
 import ru.mydispatcher.data.remote.postparams.SendCodeBody
 import ru.mydispatcher.util.UserType
@@ -88,6 +92,12 @@ class DataManager @Inject constructor(
         return makeRequest {
             api.getCustomerOrders(type, offset = offset)
         }.toObservable().map { it.data.orders }
+    }
+
+    fun createCustomerOrder(body: CreateOrderParams): Single<CustomerOrder> {
+        return makeRequest {
+            api.createCustomerOrder(body.map)
+        }.map(BaseResponse<CustomerOrder>::data)
     }
 
 }

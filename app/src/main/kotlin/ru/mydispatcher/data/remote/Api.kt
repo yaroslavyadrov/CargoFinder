@@ -34,4 +34,7 @@ interface Api {
     fun getCustomerOrders(@Query("order_type") orderType: String,//valid values "active" "inactive"
                    @Query("limit") limit: Int = 30,
                    @Query("offset") offset: Int = 0): Single<BaseResponse<CustomerOrdersResponse>>
+
+    @PUT("customer/orders/")
+    fun createCustomerOrder(@PartMap body: HashMap<String, String>): Single<BaseResponse<CustomerOrder>>
 }

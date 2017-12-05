@@ -44,6 +44,9 @@
         <activity
             android:name=".ui.customer.orders.CustomerOrdersActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.customer.createorder.CustomerCreateOrderActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

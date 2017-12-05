@@ -24,10 +24,9 @@ class CustomerOrdersActivity :
 
     private val adapter by lazy { PagerAdapter(supportFragmentManager) }
 
-    override fun getLayoutResId() = R.layout.activity_customer_orders
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_customer_orders)
         activityComponent?.inject(this)
         presenter.bind(this)
         viewPager.adapter = adapter

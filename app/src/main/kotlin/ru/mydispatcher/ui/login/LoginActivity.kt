@@ -32,11 +32,9 @@ class LoginActivity : BaseActivity(), LoginView {
 
     private lateinit var userTypeDialog: AlertDialog
 
-    override fun getLayoutResId() = R.layout.layout_activity_login
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.layout_activity_login)
         activityComponent?.inject(this)
         presenter.bind(this)
         editTextPhone.addPhoneTextWatcher()

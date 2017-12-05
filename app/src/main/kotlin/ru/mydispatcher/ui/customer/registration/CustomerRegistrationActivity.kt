@@ -73,7 +73,7 @@ class CustomerRegistrationActivity :
         object : ImagePickerCallback {
             override fun onImagesChosen(images: MutableList<ChosenImage>?) {
                 images?.let {
-                    presenter.photoSelected(images[0])
+                    presenter.photoSelected(it[0])
                 }
             }
 
@@ -98,10 +98,9 @@ class CustomerRegistrationActivity :
         }
     }
 
-    override fun getLayoutResId() = R.layout.activity_customer_registration
-
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_customer_registration)
         activityComponent?.inject(this)
         presenter.bind(this)
         toolbar.setTitle(R.string.registration_title)

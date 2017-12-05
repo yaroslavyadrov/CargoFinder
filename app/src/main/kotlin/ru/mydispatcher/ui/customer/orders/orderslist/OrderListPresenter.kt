@@ -30,9 +30,7 @@ class OrderListPresenter @Inject constructor(private val dataManager: DataManage
         getOrders = PaginationUtil.paging(
                 recyclerView,
                 object : PagingListener<CustomerOrder> {
-                    override fun onNextPage(offset: Int): Observable<List<CustomerOrder>> {
-                        return dataManager.getCustomerOrders(type, offset)
-                    }
+                    override fun onNextPage(offset: Int) = dataManager.getCustomerOrders(type, offset)
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

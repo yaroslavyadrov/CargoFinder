@@ -25,7 +25,7 @@ class CustomerRegistrationPresenter @Inject constructor(private val dataManager:
         view?.showProgressDialog()
         val params = mutableMapOf<String, RequestBody>()
         params["name"] = name.toRequestBody()
-        if (!organization.isNullOrEmpty()) params["organization"] = organization.toRequestBody()
+        if (!organization.isEmpty()) params["organization"] = organization.toRequestBody()
         params["phone"] = phone.onlyDigits().toRequestBody()
         params["country_id"] = "1".toRequestBody()
         params["city_id"] = cityId.toString().toRequestBody()

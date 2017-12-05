@@ -8,9 +8,12 @@ enum class WeightUnit {
     @SerializedName("ton") TON
 }
 
+enum class Currency(val type: String) {
+    @SerializedName("rub") RUB("rub")
+}
 
-enum class PaymentType {
-    @SerializedName("cash") CASH,
-    @SerializedName("non_cash") NON_CASH,
-    @SerializedName("both") BOTH
+enum class PaymentMethod(val method: String) {
+    @SerializedName("cash") CASH("cash"),
+    @SerializedName("non_cash") NON_CASH("non_cash"),
+    @SerializedName("both") BOTH("both")
 }

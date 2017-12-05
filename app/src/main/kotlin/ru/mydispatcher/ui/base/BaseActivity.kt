@@ -13,6 +13,7 @@ import ru.mydispatcher.util.extensions.getAppComponent
 abstract class BaseActivity : AppCompatActivity() {
 
     var activityComponent: ActivityComponent? = null
+        private set
     val eventActivityResult = ArrayList<(Intent) -> Unit>()
 
     companion object {
@@ -25,7 +26,6 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(getLayoutResId())
         activityComponent = getAppComponent().activityComponent()
     }
 
@@ -46,9 +46,6 @@ abstract class BaseActivity : AppCompatActivity() {
         }
         eventActivityResult.clear()
     }
-
-
-    protected abstract fun getLayoutResId(): Int
 
     protected fun showProgressAlert() = progressDialog.value.show()
 
